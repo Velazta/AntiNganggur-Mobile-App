@@ -41,6 +41,18 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.statusBars
+import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
+import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
+import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldGray
+import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
+import com.l0123118.ravelin.antinganggur.ui.theme.PinkSecondary
+import com.l0123118.ravelin.antinganggur.ui.theme.TextColorSecondary
+import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldBackground
+import com.l0123118.ravelin.antinganggur.ui.theme.AppOrange
+import com.l0123118.ravelin.antinganggur.ui.theme.AppMagenta
+import com.l0123118.ravelin.antinganggur.ui.theme.TextGray
+import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientStart
+import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientEnd
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 
 class SignIn : ComponentActivity() {
@@ -49,289 +61,276 @@ class SignIn : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ANTINGANGGURTheme {
-                SignInPage()
+                SignInPage2()
             }
         }
     }
 }
 
-// Definisikan warna agar mudah diubah
-val LightPinkBackground = Color(0xFFFFF8F6)
-val TextFieldGray = Color(0xFFF0F0F0) // Perkiraan warna field dari gambar
-val OrangePrimary = Color(0xFFFD7A5A) // Perkiraan dari gambar
-val PinkSecondary = Color(0xFFE8518F) // Perkiraan dari gambar
-val TextColorPrimary = Color(0xFF333333)
-val TextColorSecondary = Color.Gray
-val TextFieldBackground = Color(0xFFF0F0F0)
-val AppOrange = Color(0xFFFF6F48)
-val AppMagenta = Color(0xFFBD3B9F)
-val TextGray = Color(0xFF8A8A8A)
-val BannerGradientStart = Color(0xFFF9774E)
-val BannerGradientEnd = Color(0xFFD43D92)
 
 
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SignInPage(
-    onBackClicked: () -> Unit = {},
-    onSignInClicked: (String, String, String) -> Unit = { _, _, _ -> },
-    onLogInClicked: () -> Unit = {}
-) {
-    var fullName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
+//@OptIn(ExperimentalMaterial3Api::class)
+//@Composable
+//fun SignInPage(
+//    onBackClicked: () -> Unit = {},
+//    onSignInClicked: (String, String, String) -> Unit = { _, _, _ -> },
+//    onLogInClicked: () -> Unit = {}
+//) {
+//    var fullName by remember { mutableStateOf("") }
+//    var email by remember { mutableStateOf("") }
+//    var password by remember { mutableStateOf("") }
+//
+//    Surface(
+//        modifier = Modifier.fillMaxSize(),
+//        color = LightPinkBackground
+//    ) {
+//        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+//            val (
+//                headerImage, backButton,
+//                logo, appNameText,
+//                titleText,
+//                fullNameLabel, fullNameField,
+//                emailLabel, emailField,
+//                passwordLabel, passwordField,
+//                signInButton,
+//                alreadyAccountText
+//            ) = createRefs()
+//
+//            // Header Image
+//            Image(
+//                painter = painterResource(id = R.drawable.ic_launcher_foreground), // GANTI DENGAN ASET ANDA
+//                contentDescription = "Header Illustration",
+//                contentScale = ContentScale.Crop,
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .height(280.dp) // Sesuaikan tinggi sesuai kebutuhan
+//                    .constrainAs(headerImage) {
+//                        top.linkTo(parent.top)
+//                        start.linkTo(parent.start)
+//                        end.linkTo(parent.end)
+//                    }
+//            )
+//
+//            // Back Button
+//            IconButton(
+//                onClick = onBackClicked,
+//                modifier = Modifier.constrainAs(backButton) {
+//                    top.linkTo(parent.top, margin = 16.dp)
+//                    start.linkTo(parent.start, margin = 8.dp)
+//                }
+//            ) {
+//                Icon(
+//                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+//                    contentDescription = "Back",
+//                    tint = Color.White // Warna ikon di atas gambar header
+//                )
+//            }
+//
+//            // Logo
+//            Image(
+//                painter = painterResource(id = R.drawable.ic_launcher_foreground), // GANTI DENGAN ASET ANDA
+//                contentDescription = "App Logo",
+//                modifier = Modifier
+//                    .size(40.dp)
+//                    .constrainAs(logo) {
+//                        top.linkTo(headerImage.bottom, margin = 24.dp)
+//                        start.linkTo(parent.start, margin = 32.dp)
+//                    }
+//            )
+//
+//            // App Name Text
+//            Text(
+//                text = "AntiNganggur",
+//                color = OrangePrimary,
+//                fontWeight = FontWeight.Bold,
+//                fontSize = 16.sp,
+//                modifier = Modifier.constrainAs(appNameText) {
+//                    start.linkTo(logo.end, margin = 8.dp)
+//                    top.linkTo(logo.top)
+//                    bottom.linkTo(logo.bottom)
+//                }
+//            )
+//
+//            // Title "Sign In"
+//            Text(
+//                text = "Sign In",
+//                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Medium),
+//                color = TextColorPrimary,
+//                modifier = Modifier.constrainAs(titleText) {
+//                    top.linkTo(logo.bottom, margin = 16.dp)
+//                    start.linkTo(parent.start, margin = 32.dp)
+//                }
+//            )
+//
+//            // Full Name Label
+//            Text(
+//                text = "Full Name",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = TextColorSecondary,
+//                modifier = Modifier.constrainAs(fullNameLabel) {
+//                    top.linkTo(titleText.bottom, margin = 24.dp)
+//                    start.linkTo(parent.start, margin = 32.dp)
+//                }
+//            )
+//
+//            // Full Name TextField
+//            OutlinedTextField(
+//                value = fullName,
+//                onValueChange = { fullName = it },
+//                placeholder = { Text("Enter your full name") },
+//                singleLine = true,
+//                shape = RoundedCornerShape(50), // Rounded corners
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    focusedBorderColor = OrangePrimary,
+//                    unfocusedBorderColor = TextFieldGray,
+//                    focusedContainerColor = Color.White,
+//                    unfocusedContainerColor = TextFieldGray,
+//                    disabledContainerColor = TextFieldGray,
+//                ),
+//                modifier = Modifier
+//                    .constrainAs(fullNameField) {
+//                        top.linkTo(fullNameLabel.bottom, margin = 8.dp)
+//                        start.linkTo(parent.start, margin = 32.dp)
+//                        end.linkTo(parent.end, margin = 32.dp)
+//                        width = Dimension.fillToConstraints
+//                    }
+//            )
+//
+//            // Email Label
+//            Text(
+//                text = "Email",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = TextColorSecondary,
+//                modifier = Modifier.constrainAs(emailLabel) {
+//                    top.linkTo(fullNameField.bottom, margin = 16.dp)
+//                    start.linkTo(parent.start, margin = 32.dp)
+//                }
+//            )
+//
+//            // Email TextField
+//            OutlinedTextField(
+//                value = email,
+//                onValueChange = { email = it },
+//                placeholder = { Text("Enter your email") },
+//                singleLine = true,
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+//                shape = RoundedCornerShape(50),
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    focusedBorderColor = OrangePrimary,
+//                    unfocusedBorderColor = TextFieldGray,
+//                    focusedContainerColor = Color.White,
+//                    unfocusedContainerColor = TextFieldGray,
+//                    disabledContainerColor = TextFieldGray,
+//                ),
+//                modifier = Modifier
+//                    .constrainAs(emailField) {
+//                        top.linkTo(emailLabel.bottom, margin = 8.dp)
+//                        start.linkTo(parent.start, margin = 32.dp)
+//                        end.linkTo(parent.end, margin = 32.dp)
+//                        width = Dimension.fillToConstraints
+//                    }
+//            )
+//
+//            // Password Label
+//            Text(
+//                text = "Password",
+//                style = MaterialTheme.typography.bodyMedium,
+//                color = TextColorSecondary,
+//                modifier = Modifier.constrainAs(passwordLabel) {
+//                    top.linkTo(emailField.bottom, margin = 16.dp)
+//                    start.linkTo(parent.start, margin = 32.dp)
+//                }
+//            )
+//
+//            // Password TextField
+//            OutlinedTextField(
+//                value = password,
+//                onValueChange = { password = it },
+//                placeholder = { Text("Enter your password") },
+//                singleLine = true,
+//                visualTransformation = PasswordVisualTransformation(),
+//                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+//                shape = RoundedCornerShape(50),
+//                colors = OutlinedTextFieldDefaults.colors(
+//                    focusedBorderColor = OrangePrimary,
+//                    unfocusedBorderColor = TextFieldGray,
+//                    focusedContainerColor = Color.White,
+//                    unfocusedContainerColor = TextFieldGray,
+//                    disabledContainerColor = TextFieldGray,
+//                ),
+//                modifier = Modifier
+//                    .constrainAs(passwordField) {
+//                        top.linkTo(passwordLabel.bottom, margin = 8.dp)
+//                        start.linkTo(parent.start, margin = 32.dp)
+//                        end.linkTo(parent.end, margin = 32.dp)
+//                        width = Dimension.fillToConstraints
+//                    }
+//            )
+//
+//            // Sign In Button
+//            Button(
+//                onClick = { onSignInClicked(fullName, email, password) },
+//                shape = RoundedCornerShape(50),
+//                contentPadding = PaddingValues(), // Penting untuk gradient agar mengisi seluruh button
+//                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Container transparan
+//                modifier = Modifier
+//                    .constrainAs(signInButton) {
+//                        top.linkTo(passwordField.bottom, margin = 32.dp)
+//                        start.linkTo(parent.start, margin = 32.dp)
+//                        end.linkTo(parent.end, margin = 32.dp)
+//                        width = Dimension.fillToConstraints
+//                    }
+//                    .height(50.dp) // Tinggi button
+//                    .background(
+//                        brush = Brush.horizontalGradient(colors = listOf(OrangePrimary, PinkSecondary)),
+//                        shape = RoundedCornerShape(50)
+//                    )
+//            ) {
+//                Text(
+//                    text = "Sign In",
+//                    color = Color.White,
+//                    fontSize = 16.sp,
+//                    fontWeight = FontWeight.Bold
+//                )
+//            }
+//
+//            // "Already have an account? Log In" Text
+//            val annotatedString = buildAnnotatedString {
+//                append("Already have an account? ")
+//                withStyle(style = SpanStyle(color = OrangePrimary, fontWeight = FontWeight.Bold)) {
+//                    pushStringAnnotation(tag = "LOGIN", annotation = "login")
+//                    append("Log In")
+//                    pop()
+//                }
+//            }
+//
+//            ClickableText(
+//                text = annotatedString,
+//                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
+//                onClick = { offset ->
+//                    annotatedString.getStringAnnotations(tag = "LOGIN", start = offset, end = offset)
+//                        .firstOrNull()?.let {
+//                            onLogInClicked()
+//                        }
+//                },
+//                modifier = Modifier.constrainAs(alreadyAccountText) {
+//                    top.linkTo(signInButton.bottom, margin = 24.dp)
+//                    start.linkTo(parent.start)
+//                    end.linkTo(parent.end)
+//                    bottom.linkTo(parent.bottom, margin = 24.dp, goneMargin = 16.dp) // agar ada jarak jika keyboard muncul
+//                }
+//            )
+//
+//        }
+//    }
+//}
 
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-        color = LightPinkBackground
-    ) {
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            val (
-                headerImage, backButton,
-                logo, appNameText,
-                titleText,
-                fullNameLabel, fullNameField,
-                emailLabel, emailField,
-                passwordLabel, passwordField,
-                signInButton,
-                alreadyAccountText
-            ) = createRefs()
-
-            // Header Image
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground), // GANTI DENGAN ASET ANDA
-                contentDescription = "Header Illustration",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(280.dp) // Sesuaikan tinggi sesuai kebutuhan
-                    .constrainAs(headerImage) {
-                        top.linkTo(parent.top)
-                        start.linkTo(parent.start)
-                        end.linkTo(parent.end)
-                    }
-            )
-
-            // Back Button
-            IconButton(
-                onClick = onBackClicked,
-                modifier = Modifier.constrainAs(backButton) {
-                    top.linkTo(parent.top, margin = 16.dp)
-                    start.linkTo(parent.start, margin = 8.dp)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color.White // Warna ikon di atas gambar header
-                )
-            }
-
-            // Logo
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground), // GANTI DENGAN ASET ANDA
-                contentDescription = "App Logo",
-                modifier = Modifier
-                    .size(40.dp)
-                    .constrainAs(logo) {
-                        top.linkTo(headerImage.bottom, margin = 24.dp)
-                        start.linkTo(parent.start, margin = 32.dp)
-                    }
-            )
-
-            // App Name Text
-            Text(
-                text = "AntiNganggur",
-                color = OrangePrimary,
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                modifier = Modifier.constrainAs(appNameText) {
-                    start.linkTo(logo.end, margin = 8.dp)
-                    top.linkTo(logo.top)
-                    bottom.linkTo(logo.bottom)
-                }
-            )
-
-            // Title "Sign In"
-            Text(
-                text = "Sign In",
-                style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.Medium),
-                color = TextColorPrimary,
-                modifier = Modifier.constrainAs(titleText) {
-                    top.linkTo(logo.bottom, margin = 16.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                }
-            )
-
-            // Full Name Label
-            Text(
-                text = "Full Name",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextColorSecondary,
-                modifier = Modifier.constrainAs(fullNameLabel) {
-                    top.linkTo(titleText.bottom, margin = 24.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                }
-            )
-
-            // Full Name TextField
-            OutlinedTextField(
-                value = fullName,
-                onValueChange = { fullName = it },
-                placeholder = { Text("Enter your full name") },
-                singleLine = true,
-                shape = RoundedCornerShape(50), // Rounded corners
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = OrangePrimary,
-                    unfocusedBorderColor = TextFieldGray,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = TextFieldGray,
-                    disabledContainerColor = TextFieldGray,
-                ),
-                modifier = Modifier
-                    .constrainAs(fullNameField) {
-                        top.linkTo(fullNameLabel.bottom, margin = 8.dp)
-                        start.linkTo(parent.start, margin = 32.dp)
-                        end.linkTo(parent.end, margin = 32.dp)
-                        width = Dimension.fillToConstraints
-                    }
-            )
-
-            // Email Label
-            Text(
-                text = "Email",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextColorSecondary,
-                modifier = Modifier.constrainAs(emailLabel) {
-                    top.linkTo(fullNameField.bottom, margin = 16.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                }
-            )
-
-            // Email TextField
-            OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                placeholder = { Text("Enter your email") },
-                singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-                shape = RoundedCornerShape(50),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = OrangePrimary,
-                    unfocusedBorderColor = TextFieldGray,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = TextFieldGray,
-                    disabledContainerColor = TextFieldGray,
-                ),
-                modifier = Modifier
-                    .constrainAs(emailField) {
-                        top.linkTo(emailLabel.bottom, margin = 8.dp)
-                        start.linkTo(parent.start, margin = 32.dp)
-                        end.linkTo(parent.end, margin = 32.dp)
-                        width = Dimension.fillToConstraints
-                    }
-            )
-
-            // Password Label
-            Text(
-                text = "Password",
-                style = MaterialTheme.typography.bodyMedium,
-                color = TextColorSecondary,
-                modifier = Modifier.constrainAs(passwordLabel) {
-                    top.linkTo(emailField.bottom, margin = 16.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
-                }
-            )
-
-            // Password TextField
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                placeholder = { Text("Enter your password") },
-                singleLine = true,
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                shape = RoundedCornerShape(50),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = OrangePrimary,
-                    unfocusedBorderColor = TextFieldGray,
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = TextFieldGray,
-                    disabledContainerColor = TextFieldGray,
-                ),
-                modifier = Modifier
-                    .constrainAs(passwordField) {
-                        top.linkTo(passwordLabel.bottom, margin = 8.dp)
-                        start.linkTo(parent.start, margin = 32.dp)
-                        end.linkTo(parent.end, margin = 32.dp)
-                        width = Dimension.fillToConstraints
-                    }
-            )
-
-            // Sign In Button
-            Button(
-                onClick = { onSignInClicked(fullName, email, password) },
-                shape = RoundedCornerShape(50),
-                contentPadding = PaddingValues(), // Penting untuk gradient agar mengisi seluruh button
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent), // Container transparan
-                modifier = Modifier
-                    .constrainAs(signInButton) {
-                        top.linkTo(passwordField.bottom, margin = 32.dp)
-                        start.linkTo(parent.start, margin = 32.dp)
-                        end.linkTo(parent.end, margin = 32.dp)
-                        width = Dimension.fillToConstraints
-                    }
-                    .height(50.dp) // Tinggi button
-                    .background(
-                        brush = Brush.horizontalGradient(colors = listOf(OrangePrimary, PinkSecondary)),
-                        shape = RoundedCornerShape(50)
-                    )
-            ) {
-                Text(
-                    text = "Sign In",
-                    color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            // "Already have an account? Log In" Text
-            val annotatedString = buildAnnotatedString {
-                append("Already have an account? ")
-                withStyle(style = SpanStyle(color = OrangePrimary, fontWeight = FontWeight.Bold)) {
-                    pushStringAnnotation(tag = "LOGIN", annotation = "login")
-                    append("Log In")
-                    pop()
-                }
-            }
-
-            ClickableText(
-                text = annotatedString,
-                style = MaterialTheme.typography.bodyMedium.copy(textAlign = TextAlign.Center),
-                onClick = { offset ->
-                    annotatedString.getStringAnnotations(tag = "LOGIN", start = offset, end = offset)
-                        .firstOrNull()?.let {
-                            onLogInClicked()
-                        }
-                },
-                modifier = Modifier.constrainAs(alreadyAccountText) {
-                    top.linkTo(signInButton.bottom, margin = 24.dp)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom, margin = 24.dp, goneMargin = 16.dp) // agar ada jarak jika keyboard muncul
-                }
-            )
-
-        }
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, heightDp = 800) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
-@Composable
-fun SignInScreenPreview() {
-    SignInPage()
-}
+//@Preview(showBackground = true, widthDp = 360, heightDp = 800) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
+//@Composable
+//fun SignInScreenPreview() {
+//    SignInPage()
+//}
 
 @Composable
 fun SignInPage2() {
@@ -388,7 +387,7 @@ fun SignInPage2() {
                     .size(36.dp)
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.backicon),
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = Color.White,
                     modifier = Modifier.size(20.dp)
@@ -617,13 +616,13 @@ fun SignInPage2() {
                     top.linkTo(signInButton.bottom, margin = 24.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom, margin = 24.dp)
+                    bottom.linkTo(parent.bottom, margin = 0.dp)
                 }
         )
     }
 }
 
-@Preview(showBackground = true) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
+@Preview(showBackground = true, widthDp = 360, heightDp = 900) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
 @Composable
 fun SignInScreenPreview2() {
     SignInPage2()

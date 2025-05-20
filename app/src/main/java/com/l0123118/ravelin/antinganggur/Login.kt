@@ -1,2 +1,340 @@
 package com.l0123118.ravelin.antinganggur
 
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack // Menggunakan autoMirrored untuk RTL support
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.ui.text.font.Font
+import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
+import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
+import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldGray
+import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
+import com.l0123118.ravelin.antinganggur.ui.theme.PinkSecondary
+import com.l0123118.ravelin.antinganggur.ui.theme.TextColorSecondary
+import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldBackground
+import com.l0123118.ravelin.antinganggur.ui.theme.AppOrange
+import com.l0123118.ravelin.antinganggur.ui.theme.AppMagenta
+import com.l0123118.ravelin.antinganggur.ui.theme.TextGray
+import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientStart
+import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientEnd
+import com.l0123118.ravelin.antinganggur.ui.theme.CheckboxRed
+import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
+
+@Composable
+fun LoginPage() {
+    val configuration = LocalConfiguration.current
+    val screenHeight = configuration.screenHeightDp.dp
+
+    ConstraintLayout (
+        modifier = Modifier
+            .fillMaxSize()
+            .background(LightPinkBackground)
+            .verticalScroll(rememberScrollState())
+    ) {
+        val (
+            bannerBox,
+            logoGroup,
+            logInTitle,
+            usernameField,
+            usernameLabel,
+            passwordField,
+            passwordLabel,
+            rememberMeRow, // Added for "Remember me"
+            logInButton,
+            signUp     // Renamed from loginText
+        ) = createRefs()
+
+        Box(
+            modifier = Modifier
+                .constrainAs(bannerBox) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                    height = Dimension.value(screenHeight * 0.35f) // 30% of the screen height
+                }
+                .fillMaxSize()
+                .background(Brush.verticalGradient(colors = listOf(BannerGradientStart,BannerGradientEnd)))
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.loginilu),
+                contentDescription = "Banner Illustration",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .height(200.dp)
+                    .align(Alignment.BottomCenter)
+            )
+            IconButton(
+                onClick = { /*TODO SOMETHING*/},
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 60.dp, start = 16.dp)
+                    .background(Color.Black.copy(alpha = 0.2f), CircleShape)
+                    .size(36.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        Box(
+            modifier = Modifier
+                .constrainAs(logoGroup) {
+                    top.linkTo(bannerBox.bottom, margin = 28.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.wrapContent
+                }
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logoantinganggur),
+                    contentDescription = "App Logo",
+                    modifier = Modifier
+                        .size(30.dp)
+                )
+                Row(
+                    modifier = Modifier.padding(start = 10.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Anti",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = Color.Black
+                    )
+                    Text(
+                        text = "Nganggur",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 25.sp,
+                        color = AppOrange
+                    )
+                }
+            }
+        }
+
+        Text(
+            text = "Log in",
+            fontWeight = FontWeight.Medium,
+            fontSize = 32.sp,
+            color = Color.Black,
+            modifier = Modifier
+                .constrainAs(logInTitle) {
+                    top.linkTo(logoGroup.bottom, margin = 32.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                }
+        )
+
+        var username by remember { mutableStateOf("") }
+        var password by remember { mutableStateOf("") }
+        var rememberMe by remember { mutableStateOf(false) }
+
+        Text(
+            text = "Email",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextColorPrimary,
+            modifier = Modifier.constrainAs(usernameLabel) {
+                top.linkTo(logInTitle.bottom, margin = 24.dp)
+                start.linkTo(parent.start, margin = 32.dp)
+            }
+        )
+
+        // Full Name TextField
+        OutlinedTextField(
+            value = username,
+            onValueChange = { username = it },
+            placeholder = { Text("Enter your email") },
+            singleLine = true,
+            shape = RoundedCornerShape(50), // Rounded corners
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = OrangePrimary,
+                unfocusedBorderColor = TextFieldGray,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = TextFieldGray,
+                disabledContainerColor = TextFieldGray,
+            ),
+            modifier = Modifier
+                .constrainAs(usernameField) {
+                    top.linkTo(usernameLabel.bottom, margin = 8.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                    end.linkTo(parent.end, margin = 32.dp)
+                    width = Dimension.fillToConstraints
+                }
+        )
+
+        Text(
+            text = "Password",
+            style = MaterialTheme.typography.bodyMedium,
+            color = TextColorPrimary,
+            modifier = Modifier.constrainAs(passwordLabel) {
+                top.linkTo(usernameField.bottom, margin = 16.dp)
+                start.linkTo(parent.start, margin = 32.dp)
+            }
+        )
+
+        OutlinedTextField(
+            value = password,
+            onValueChange = { password = it },
+            placeholder = { Text("Enter your password") },
+            singleLine = true,
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Password),
+                shape = RoundedCornerShape(50),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = OrangePrimary,
+                unfocusedBorderColor = TextFieldGray,
+                focusedContainerColor = Color.White,
+                unfocusedContainerColor = TextFieldGray,
+                disabledContainerColor = TextFieldGray,
+                cursorColor = OrangePrimary
+            ),
+            modifier = Modifier
+                .constrainAs(passwordField) {
+                    top.linkTo(passwordLabel.bottom, margin = 8.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                    end.linkTo(parent.end, margin = 32.dp)
+                    width = Dimension.fillToConstraints
+                }
+        )
+
+        Row(
+            modifier = Modifier
+                .constrainAs(rememberMeRow) {
+                    top.linkTo(passwordField.bottom, margin = 20.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                }
+                .clickable { rememberMe = !rememberMe }
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(18.dp)
+                    .background(CheckboxRed, shape = RoundedCornerShape(4.dp))
+            )
+            Spacer(modifier=Modifier.width(8.dp))
+
+            Text(
+                text = "Remember me",
+                fontSize = 14.sp,
+                color = TextColorPrimary
+            )
+        }
+
+        Button(
+            onClick = { /* TODO SOMETHING*/ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp)
+                .constrainAs(logInButton) {
+                    top.linkTo(rememberMeRow.bottom, margin = 24.dp)
+                    start.linkTo(parent.start, margin = 32.dp)
+                    end.linkTo(parent.end, margin = 32.dp)
+                    width = Dimension.fillToConstraints
+                },
+            shape = RoundedCornerShape(50.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color.Transparent
+            ),
+            contentPadding = PaddingValues()
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.horizontalGradient(
+                            colors = listOf(AppOrange, AppMagenta)
+                        ),
+                        shape = RoundedCornerShape(50.dp)
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Log In",
+                    color = Color.White,
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 18.sp
+                )
+            }
+        }
+
+        val annotatedText = buildAnnotatedString {
+            withStyle(style = SpanStyle(color = TextGray, fontSize = 14.sp, fontWeight = FontWeight.Normal)) {
+                append("Don't have an account? ")
+            }
+            pushStringAnnotation(tag = "SIGN_IN", annotation = "sign_in_action")
+
+            withStyle(style = SpanStyle(color = AppOrange, fontSize = 14.sp, fontWeight = FontWeight.Normal)) {
+                append("Sign In")
+            }
+            pop()
+        }
+
+        ClickableText(
+            text = annotatedText,
+            onClick = { offset ->
+                annotatedText.getStringAnnotations(tag = "SIGN_IN", start = offset, end = offset)
+                    .firstOrNull()?.let {
+                        /* TODO: NAVIGATE TO SIGN UP PAGE*/
+                    }
+            },
+            modifier = Modifier
+                .constrainAs(signUp) {
+                    top.linkTo(logInButton.bottom, margin = 24.dp)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }
+        )
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360, heightDp = 900)
+@Composable
+fun LoginPreview() {
+    LoginPage()
+}
