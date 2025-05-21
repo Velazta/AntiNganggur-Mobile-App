@@ -1,5 +1,7 @@
 package com.l0123118.ravelin.antinganggur
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,6 +43,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.ui.platform.LocalContext
 import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
 import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldGray
@@ -449,6 +452,7 @@ fun SignInPage2() {
         var fullName by remember { mutableStateOf("") }
         var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
+        val context = LocalContext.current
 
         // Full Name Label
         Text(
@@ -608,7 +612,7 @@ fun SignInPage2() {
             onClick = { offset ->
                 annotatedText.getStringAnnotations(tag = "LOGIN", start = offset, end = offset)
                     .firstOrNull()?.let {
-                        // TODO: NAVIGATE TO LOGIN PAGE
+                        navigateToLogin(context)
                     }
             },
             modifier = Modifier
@@ -621,6 +625,12 @@ fun SignInPage2() {
         )
     }
 }
+
+fun navigateToLogin(context: Context) {
+    val intent = Intent(context, Login::class.java)
+    context.startActivity(intent)
+}
+
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 900) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
 @Composable

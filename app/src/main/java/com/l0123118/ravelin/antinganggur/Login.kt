@@ -1,5 +1,7 @@
 package com.l0123118.ravelin.antinganggur
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -41,6 +43,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
@@ -57,6 +60,18 @@ import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientEnd
 import com.l0123118.ravelin.antinganggur.ui.theme.CheckboxRed
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 
+class Login : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContent {
+            ANTINGANGGURTheme {
+                LoginPage()
+            }
+        }
+    }
+}
+
 @Composable
 fun LoginPage() {
     val configuration = LocalConfiguration.current
@@ -67,7 +82,7 @@ fun LoginPage() {
             .fillMaxSize()
             .background(LightPinkBackground)
             .verticalScroll(rememberScrollState())
-            .padding(WindowInsets.statusBars.asPaddingValues())
+//            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         val (
             bannerBox,
@@ -173,6 +188,7 @@ fun LoginPage() {
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var rememberMe by remember { mutableStateOf(false) }
+        val context = LocalContext.current
 
         Text(
             text = "Email",
@@ -310,7 +326,7 @@ fun LoginPage() {
             }
             pushStringAnnotation(tag = "SIGN_IN", annotation = "sign_in_action")
 
-            withStyle(style = SpanStyle(color = AppOrange, fontSize = 14.sp, fontWeight = FontWeight.Normal)) {
+            withStyle(style = SpanStyle(color = AppOrange, fontSize = 14.sp, fontWeight = FontWeight.Medium)) {
                 append("Sign In")
             }
             pop()
@@ -321,7 +337,7 @@ fun LoginPage() {
             onClick = { offset ->
                 annotatedText.getStringAnnotations(tag = "SIGN_IN", start = offset, end = offset)
                     .firstOrNull()?.let {
-                        /* TODO: NAVIGATE TO SIGN UP PAGE*/
+                        navigateToSignUp(context)
                     }
             },
             modifier = Modifier
@@ -329,10 +345,15 @@ fun LoginPage() {
                     top.linkTo(logInButton.bottom, margin = 24.dp)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
+                    bottom.linkTo(parent.bottom, margin = -30.dp)
                 }
         )
     }
+}
+
+fun navigateToSignUp(context: Context) {
+    val intent = Intent(context, SignIn::class.java)
+    context.startActivity(intent)
 }
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 900)
