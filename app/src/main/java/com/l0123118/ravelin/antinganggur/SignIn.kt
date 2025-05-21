@@ -625,5 +625,7 @@ fun SignInPage2() {
 @Preview(showBackground = true, widthDp = 360, heightDp = 900) // Sesuaikan dengan dimensi target (1080x2400px adalah ~360x800dp)
 @Composable
 fun SignInScreenPreview2() {
-    SignInPage2()
+    ANTINGANGGURTheme {
+        SignInPage2()
+    }
 }

@@ -77,9 +77,9 @@ fun LoginPage() {
             usernameLabel,
             passwordField,
             passwordLabel,
-            rememberMeRow, // Added for "Remember me"
+            rememberMeRow,
             logInButton,
-            signUp     // Renamed from loginText
+            signUp
         ) = createRefs()
 
         Box(
