@@ -67,6 +67,7 @@ fun LoginPage() {
             .fillMaxSize()
             .background(LightPinkBackground)
             .verticalScroll(rememberScrollState())
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         val (
             bannerBox,
@@ -92,6 +93,7 @@ fun LoginPage() {
                 }
                 .fillMaxSize()
                 .background(Brush.verticalGradient(colors = listOf(BannerGradientStart,BannerGradientEnd)))
+
         ) {
             Image(
                 painter = painterResource(id = R.drawable.loginilu),
