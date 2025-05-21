@@ -23,3 +23,6 @@ val TextGray = Color(0xFF8A8A8A)
 val BannerGradientStart = Color(0xFFF9774E)
 val BannerGradientEnd = Color(0xFFD43D92)
 val CheckboxRed = Color(0xFFEA4335)
+// Warna dari UI Anda
+val AntiNganggurOrange = Color(0xFFF46036) // Perkiraan warna dari gambar
+val AntiNganggurDarkGray = Color(0xFF5A5A5A) // Perkiraan warna dari gambar

@@ -40,6 +40,9 @@ android {
 }
 
 dependencies {
+    val nav_version = "2.8.9"
+
+    implementation("androidx.navigation:navigation-compose:$nav_version")
     implementation(platform("androidx.compose:compose-bom:2024.04.00")) // Cek versi terbaru BOM
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")

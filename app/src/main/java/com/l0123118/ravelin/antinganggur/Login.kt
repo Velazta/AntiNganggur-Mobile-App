@@ -3,6 +3,8 @@ package com.l0123118.ravelin.antinganggur
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -45,6 +47,9 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
 import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldGray
@@ -66,16 +71,17 @@ class Login : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             ANTINGANGGURTheme {
-                LoginPage()
+                LoginPage(navController = rememberNavController())
             }
         }
     }
 }
 
 @Composable
-fun LoginPage() {
+fun LoginPage(navController: NavHostController) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
+    val context = LocalContext.current
 
     ConstraintLayout (
         modifier = Modifier
@@ -119,7 +125,9 @@ fun LoginPage() {
                     .align(Alignment.BottomCenter)
             )
             IconButton(
-                onClick = { /*TODO SOMETHING*/},
+                onClick = {
+                    navigateToMainActivity(context)
+                },
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .padding(top = 60.dp, start = 16.dp)
@@ -188,7 +196,6 @@ fun LoginPage() {
         var username by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var rememberMe by remember { mutableStateOf(false) }
-        val context = LocalContext.current
 
         Text(
             text = "Email",
@@ -284,7 +291,9 @@ fun LoginPage() {
         }
 
         Button(
-            onClick = { /* TODO SOMETHING*/ },
+            onClick = {
+                navigateToMainActivity(context)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp)
@@ -354,10 +363,23 @@ fun LoginPage() {
 fun navigateToSignUp(context: Context) {
     val intent = Intent(context, SignIn::class.java)
     context.startActivity(intent)
+    try {
+        val intent = Intent(context, SignIn::class.java)
+        context.startActivity(intent)
+    } catch (e: Exception) {
+        Log.e("NavigationError", "Error navigating to SignIn: ${e.message}")
+        Toast.makeText(context, "Navigation failed to SignIn", Toast.LENGTH_SHORT).show()
+    }
+}
+
+// Function to navigate to MainActivity
+fun navigateToMainActivity(context: Context) {
+    val intent = Intent(context, MainActivity::class.java)
+    context.startActivity(intent)
 }
 
 @Preview(showBackground = true, widthDp = 360, heightDp = 900)
 @Composable
 fun LoginPreview() {
-    LoginPage()
+    LoginPage(navController = rememberNavController())
 }
