@@ -21,5 +21,5 @@ val drawerMenuItems = listOf(
     Screen.Login,
     Screen.SignIn,
     Screen.ContactPage
-    // Anda bisa menambahkan Screen.Contact di sini jika ingin menampilkannya di drawer
+
 )
