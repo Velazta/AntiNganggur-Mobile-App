@@ -62,6 +62,10 @@ fun AppNavHost(
 
             SignInPage2(navController = navController)
         }
+
+        composable(Screen.ContactPage.route) {
+            ContactPage(navController = navController)
+        }
     }
 }
 
@@ -70,7 +74,9 @@ fun AppNavHost(
 fun AppTopBar(
     scope: CoroutineScope,
     drawerState: DrawerState
+
 ) {
+    val context = LocalContext.current
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -88,7 +94,9 @@ fun AppTopBar(
         },
         navigationIcon = {
             IconButton(
-                onClick = { /* Aksi jika logo diklik, misal kembali ke Home. Kosongkan jika tidak ada aksi. */ }
+                onClick = {
+                    navigateToMainActivity(context)
+                }
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.logoantinganggur), // Pastikan drawable ini ada
