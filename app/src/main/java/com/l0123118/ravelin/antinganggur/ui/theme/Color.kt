@@ -26,3 +26,13 @@ val CheckboxRed = Color(0xFFEA4335)
 // Warna dari UI Anda
 val AntiNganggurOrange = Color(0xFFF46036) // Perkiraan warna dari gambar
 val AntiNganggurDarkGray = Color(0xFF5A5A5A) // Perkiraan warna dari gambar
+
+
+//tambahan
+//tambahan
+val PrimaryOrange = Color(0xFFFD7A5A)
+val LightOrange = Color(0xFFFFF6F4)
+val BackgroundOrange = Color(0xFFEF7950)
+val LightPeach = Color(0xFFF4B49B)
+val Gray = Color(0xFF7D7D7D)
+val LightGray = Color(0xFFEEEEEE)

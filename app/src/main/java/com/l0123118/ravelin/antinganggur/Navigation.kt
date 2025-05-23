@@ -66,6 +66,10 @@ fun AppNavHost(
         composable(Screen.ContactPage.route) {
             ContactPage(navController = navController)
         }
+
+        composable(Screen.LowonganScreen.route) {
+            LowonganScreen()
+        }
     }
 }
 
