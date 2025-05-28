@@ -29,7 +29,7 @@ class MainActivity : ComponentActivity() {
                 ModalNavigationDrawer(
                     drawerState = drawerState,
                     drawerContent = {
-                        ModalDrawerSheet(modifier = Modifier.width(300.dp)) { // Beri lebar standar
+                        ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
                             // Memanggil DrawerHeader dari Navigation.kt
                             DrawerHeader()
                             Divider()

@@ -22,7 +22,7 @@ val drawerMenuItems = listOf(
     Screen.Home,
     Screen.Login,
     Screen.SignIn,
+    Screen.LowonganScreen,
     Screen.ContactPage,
-    Screen.LowonganScreen
 
 )

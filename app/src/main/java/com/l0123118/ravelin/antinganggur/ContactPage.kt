@@ -90,7 +90,7 @@ class Contact : ComponentActivity() {
 }
 
 val OrangePeel = Color(0xFFFF7144)
-val LightPeach = Color(0xFFFFF3E0) // Perkiraan warna background utama
+val LightPeach = Color(0xFFFFF6F4) // Perkiraan warna background utama
 val DarkText = Color(0xFF333333)
 val MediumGrayText = Color(0xFF757575)
 val LightGrayBorder = Color(0xFFE0E0E0)
@@ -265,6 +265,8 @@ fun ContactPage(navController: NavHostController) {
 //                    .padding(start = 24.dp, end = 24.dp)
 //            )
 //        }
+
+
         item {
             Box(
                 modifier = Modifier
@@ -272,11 +274,11 @@ fun ContactPage(navController: NavHostController) {
                     .background(YellowBackgroundForm)
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logoantinganggur),
+                    painter = painterResource(id = R.drawable.girl),
                     contentDescription = "Contact Form Bg",
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .height(400.dp)
                         .height(LocalDensity.current.run { 2400.dp / 3 })
                         .align(Alignment.TopCenter)
                 )
