@@ -98,6 +98,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.filled.Bolt
 import androidx.compose.material.icons.filled.ChevronRight
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Person
 import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
@@ -722,7 +723,7 @@ fun VisionCardNew(modifier: Modifier = Modifier) {
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
-                    imageVector = Icons.Filled.Bolt, // Pastikan Icons.Filled.Bolt diimpor
+                    imageVector = Icons.Filled.Lightbulb, // Pastikan Icons.Filled.Bolt diimpor
                     contentDescription = "Visi Icon",
                     tint = VisMisIconTintColor,
                     modifier = Modifier.size(28.dp) // Ukuran ikon petir
@@ -880,79 +881,121 @@ fun MissionCardNewPreview() {
     }
 }
 
-data class PersonilTeamItem(
-    val bannerBackground: ImageVector,
-    val personPictureId: Int? = null,
-    val position: String,
-    val onClick: () -> Unit
+//data class PersonilTeamItem(
+//    val bannerBackground: ImageVector,
+//    val personPictureId: Int? = null,
+//    val position: String,
+//    val onClick: () -> Unit
+//)
+//
+//class PersonilTeamViewModel : ViewModel() {
+//    private val _personilteam = MutableStateFlow<List<PersonilTeamItem>>(emptyList())
+//    val personilteam: StateFlow<List<PersonilTeamItem>> = _personilteam.asStateFlow()
+//
+//    init {
+//        loadPersonilTeam()
+//    }
+//
+//    private fun loadPersonilTeam() {
+//
+//        //Orang Pertama
+//        _personilteam.value = listOf(
+//            PersonilTeamItem(
+//                bannerBackground = Icons.Filled.Person,
+//                personPictureId  = R.drawable.smileman,
+//                position = "Manager",
+//                onClick = { /* Text Onclick For Detail Team Project*/}
+//            )
+//        )
+//        //Orang Kedua
+//        _personilteam.value = listOf(
+//            PersonilTeamItem(
+//                bannerBackground = Icons.Filled.Person,
+//                personPictureId  = R.drawable.smileman,
+//                position = "Manager",
+//                onClick = { /* Text Onclick For Detail Team Project*/}
+//            )
+//        )
+//        //Orang Ketiga
+//        _personilteam.value = listOf(
+//            PersonilTeamItem(
+//                bannerBackground = Icons.Filled.Person,
+//                personPictureId  = R.drawable.smileman,
+//                position = "Manager",
+//                onClick = { /* Text Onclick For Detail Team Project*/}
+//            )
+//        )
+//        //Orang Keempat
+//        _personilteam.value = listOf(
+//            PersonilTeamItem(
+//                bannerBackground = Icons.Filled.Person,
+//                personPictureId  = R.drawable.smileman,
+//                position = "Manager",
+//                onClick = { /* Text Onclick For Detail Team Project*/}
+//            )
+//        )
+//
+//    }
+//
+//}
+//
+//
+////lanjut nanti capeeeeeeeeeeeeeeeeee
+//@Composable
+//fun PersonilTeam() {
+//
+//}
+//
+//@Preview(showBackground = true, heightDp = 800, widthDp = 320)
+//@Composable
+//fun PersonilTeamPreview() {
+//    MaterialTheme {
+//        PersonilTeam()
+//    }
+//}
+
+
+//SECTION FOR TEAM MEMBER
+data class TeamMember(
+    val id: Int,
+    val name: String,
+    val role: String,
+    val description: String,
+    val imageRes: Int? = null
 )
 
-class PersonilTeamViewModel : ViewModel() {
-    private val _personilteam = MutableStateFlow<List<PersonilTeamItem>>(emptyList())
-    val personilteam: StateFlow<List<PersonilTeamItem>> = _personilteam.asStateFlow()
-
-    init {
-        loadPersonilTeam()
-    }
-
-    private fun loadPersonilTeam() {
-
-        //Orang Pertama
-        _personilteam.value = listOf(
-            PersonilTeamItem(
-                bannerBackground = Icons.Filled.Person,
-                personPictureId  = R.drawable.smileman,
-                position = "Manager",
-                onClick = { /* Text Onclick For Detail Team Project*/}
+class TeamViewModel : ViewModel() {
+    private val _teamMembers = mutableStateOf(
+        listOf(
+            TeamMember(
+                id = 1,
+                name = "Sarah Johnson",
+                role = "Manager",
+                description = "Improve well being, grow future leader, become the greatness human"
+            ),
+            TeamMember(
+                id = 2,
+                name = "Michael Chen",
+                role = "Developer",
+                description = "Creating innovative solutions with passion and dedication"
+            ),
+            TeamMember(
+                id = 3,
+                name = "Emily Davis",
+                role = "Designer",
+                description = "Crafting beautiful experiences that inspire and engage users"
+            ),
+            TeamMember(
+                id = 4,
+                name = "David Wilson",
+                role = "Analyst",
+                description = "Turning data into insights for better decision making"
             )
         )
-        //Orang Kedua
-        _personilteam.value = listOf(
-            PersonilTeamItem(
-                bannerBackground = Icons.Filled.Person,
-                personPictureId  = R.drawable.smileman,
-                position = "Manager",
-                onClick = { /* Text Onclick For Detail Team Project*/}
-            )
-        )
-        //Orang Ketiga
-        _personilteam.value = listOf(
-            PersonilTeamItem(
-                bannerBackground = Icons.Filled.Person,
-                personPictureId  = R.drawable.smileman,
-                position = "Manager",
-                onClick = { /* Text Onclick For Detail Team Project*/}
-            )
-        )
-        //Orang Keempat
-        _personilteam.value = listOf(
-            PersonilTeamItem(
-                bannerBackground = Icons.Filled.Person,
-                personPictureId  = R.drawable.smileman,
-                position = "Manager",
-                onClick = { /* Text Onclick For Detail Team Project*/}
-            )
-        )
+    )
 
-    }
-
+    val teamMembers: State<List<TeamMember>> = _teamMembers
 }
-
-
-//lanjut nanti capeeeeeeeeeeeeeeeeee
-@Composable
-fun PersonilTeam() {
-
-}
-
-@Preview(showBackground = true, heightDp = 800, widthDp = 320)
-@Composable
-fun PersonilTeamPreview() {
-    MaterialTheme {
-        PersonilTeam()
-    }
-}
-
 
 
 //@Preview(showBackground = true)
