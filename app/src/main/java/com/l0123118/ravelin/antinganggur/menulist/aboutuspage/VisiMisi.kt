@@ -41,24 +41,21 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
+import com.l0123118.ravelin.antinganggur.ui.theme.LightOrange
+import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
 
-val VisMisOrangeBanner = Color(0xFFF9794D)
-val VisMisCardBorderColor = VisMisOrangeBanner
-val VisMisCardContentBgColor = Color.White
-val VisMisSectionBgColor = Color(0xFFFFFBF9)
-val VisMisSubtitleTextColor = Color(0xFF5A5A5A)
+
+
 val VisMisIconBgColor = Color(0xFFFFEAE4)
-val VisMisIconTintColor = VisMisOrangeBanner
-val VisMisTitleTextColor = VisMisOrangeBanner
-val VisMisVisionTextColor = Color(0xFF8C5B4C)
-val VisMisMissionTextColor = Color(0xFF4A4A4A)
+val VisMisVisionTextColor = Color.Black
+val VisMisMissionTextColor = Color.Black
 
 @Composable
 fun VisiMisiSectionNew() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(VisMisSectionBgColor)
+            .background(LightOrange)
             .padding(vertical = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -66,7 +63,7 @@ fun VisiMisiSectionNew() {
         Box(
             modifier = Modifier
                 .wrapContentWidth()
-                .background(VisMisOrangeBanner)
+                .background(OrangePrimary)
                 .padding(horizontal = 32.dp, vertical = 8.dp)
         ) {
             Text(
@@ -82,7 +79,7 @@ fun VisiMisiSectionNew() {
         // Teks Subtitle
         Text(
             text = "Kami berkomitmen untuk menciptakan dampak\npositif dalam ekosistem teknologi Indonesia",
-            color = VisMisSubtitleTextColor,
+            color = Color.Black,
             fontSize = 15.sp,
             textAlign = TextAlign.Center,
             lineHeight = 22.sp,
@@ -121,8 +118,8 @@ fun VisiMisiSectionNew() {
 @Composable
 fun CardShell(
     modifier: Modifier = Modifier,
-    borderColor: Color = VisMisCardBorderColor,
-    contentBackgroundColor: Color = VisMisCardContentBgColor,
+    borderColor: Color = OrangePrimary,
+    contentBackgroundColor: Color = Color.White,
     cornerRadius: Dp = 20.dp,
     borderWidth: Dp = 1.5.dp,
     elevation: Dp = 4.dp,
@@ -164,7 +161,7 @@ fun VisionCardNew(modifier: Modifier = Modifier) {
                 Icon(
                     imageVector = Icons.Filled.Lightbulb,
                     contentDescription = "Visi Icon",
-                    tint = VisMisIconTintColor,
+                    tint = OrangePrimary,
                     modifier = Modifier.size(28.dp)
                 )
             }
@@ -172,7 +169,7 @@ fun VisionCardNew(modifier: Modifier = Modifier) {
             // Teks Judul "VISI"
             Text(
                 text = "VISI",
-                color = VisMisTitleTextColor,
+                color = OrangePrimary,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(title) {
@@ -233,7 +230,7 @@ fun MissionCardNew(modifier: Modifier = Modifier) {
                 Icon(
                     imageVector = Icons.Filled.Bolt,
                     contentDescription = "Misi Icon",
-                    tint = VisMisIconTintColor,
+                    tint = OrangePrimary,
                     modifier = Modifier.size(32.dp)
                 )
             }
@@ -241,7 +238,7 @@ fun MissionCardNew(modifier: Modifier = Modifier) {
             // Teks Judul "MISI"
             Text(
                 text = "MISI",
-                color = VisMisTitleTextColor,
+                color = OrangePrimary,
                 fontSize = 28.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.constrainAs(title) {
@@ -277,7 +274,7 @@ fun MissionListItem(text: String, icon: ImageVector = Icons.Filled.ChevronRight)
         Icon(
             imageVector = icon,
             contentDescription = "Mission bullet point",
-            tint = VisMisIconTintColor,
+            tint = OrangePrimary,
             modifier = Modifier.size(20.dp).padding(top = 3.dp)
         )
         Spacer(modifier = Modifier.width(10.dp))

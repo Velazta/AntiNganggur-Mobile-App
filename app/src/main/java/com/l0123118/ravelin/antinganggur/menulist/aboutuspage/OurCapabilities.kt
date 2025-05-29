@@ -46,6 +46,158 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
+
+data class CapabilityItem(
+    val icon: ImageVector,
+    val title: String,
+    val description: String
+)
+
+class CapabilitiesViewModel : ViewModel() {
+    private val _capabilities = MutableStateFlow<List<CapabilityItem>>(emptyList())
+    val capabilities: StateFlow<List<CapabilityItem>> = _capabilities.asStateFlow()
+
+    init {
+        loadCapabilities()
+    }
+
+    private fun loadCapabilities() {
+        _capabilities.value = listOf(
+            CapabilityItem(Icons.Filled.Settings, "Pengembangan Solusi IT Kustom", "mengembangkan solusi perangkat lunak yang disesuaikan dengan kebutuhan spesifik klien, mulai dari aplikasi mobile hingga sistem manajemen data"),
+            CapabilityItem(Icons.Filled.CloudUpload, "Integrasi Teknologi Modern", "Kami mengintegrasikan teknologi modern seperti AI, Big Data, dan Cloud Computing untuk memberikan solusi yang efisien dan inovatif."),
+            CapabilityItem(Icons.Filled.Security, "Keamanan Cyber", "Kami menawarkan layanan keamanan siber yang komprehensif untuk melindungi data dan infrastruktur IT Anda dari ancaman siber yang terus berkembang."),
+            CapabilityItem(Icons.Filled.Settings, "Dukungan dan Pemeliharaan IT", "Kami menyediakan layanan dukungan teknis dan pemeliharaan sistem berkelanjutan, memastikan infrastruktur IT klien berfungsi optimal dan selalu diperbarui dengan teknologi terbaru.")
+        )
+    }
+}
+
+@Composable
+fun CapabilitiesImageSection() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .background(Color(0xFFFBCFE8)) // Latar belakang pink muda untuk area gambar
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.smileman),
+            contentDescription = "Our Capabilities Hero",
+            contentScale = ContentScale.Crop,
+            alignment = Alignment.TopCenter,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}
+
+@Composable
+fun CapabilitiesTitleContent(orangeColor: Color, darkTextColor: Color) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .width(5.dp)
+                .height(60.dp)
+                .background(Color.Black)
+        )
+        Spacer(modifier = Modifier.width(12.dp))
+        Text(
+            text = buildAnnotatedString {
+                withStyle(style = SpanStyle(color = orangeColor, fontWeight = FontWeight.Bold, fontSize = 28.sp)) {
+                    append("Our Capabilities\n")
+                }
+                withStyle(style = SpanStyle(color = darkTextColor, fontWeight = FontWeight.Bold, fontSize = 28.sp)) {
+                    append("We Provide")
+                }
+            },
+            lineHeight = 34.sp
+        )
+    }
+}
+
+@Composable
+fun CapabilityRowItem(
+    icon: ImageVector,
+    title: String,
+    description: String,
+    iconBackgroundColor: Color,
+    titleColor: Color,
+    descriptionColor: Color
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.Top
+    ) {
+        Box(
+            modifier = Modifier
+                .size(56.dp)
+                .clip(CircleShape)
+                .background(iconBackgroundColor)
+                .padding(12.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Icon(
+                imageVector = icon,
+                contentDescription = title,
+                tint = Color.White,
+                modifier = Modifier.size(28.dp)
+            )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = title, color = titleColor, fontSize = 20.sp, fontWeight = FontWeight.Bold, lineHeight = 22.sp)
+            Spacer(modifier = Modifier.height(6.dp))
+            Text(text = description, color = descriptionColor, fontSize = 17.sp, lineHeight = 20.sp)
+        }
+    }
+}
+
+@Preview(showBackground = true, widthDp = 360, name = "Capabilities Content Preview")
+@Composable
+fun CapabilitiesContentPreview() {
+    val capabilitiesViewModel: CapabilitiesViewModel = viewModel()
+    val capabilities by capabilitiesViewModel.capabilities.collectAsState()
+    val orangeColor = Color(0xFFFF6F3E)
+    val darkTextColorForTitle = Color(0xFF333333)
+    val lightPinkBackground = Color(0xFFFFF9F7)
+    val descriptionItemColor = Color(0xFF555555)
+
+    ANTINGANGGURTheme {
+        LazyColumn(modifier = Modifier.background(LightOrange)) {
+            item { CapabilitiesImageSection() }
+            item {
+                Column(modifier = Modifier.fillMaxWidth().background(lightPinkBackground)) {
+                    CapabilitiesTitleContent(orangeColor = orangeColor, darkTextColor = darkTextColorForTitle)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    capabilities.forEachIndexed { index, capability ->
+                        Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                            CapabilityRowItem(
+                                icon = capability.icon,
+                                title = capability.title,
+                                description = capability.description,
+                                iconBackgroundColor = orangeColor,
+                                titleColor = orangeColor,
+                                descriptionColor = descriptionItemColor
+                            )
+                        }
+                        if (index < capabilities.size - 1) {
+                            Spacer(modifier = Modifier.height(24.dp))
+                        }
+                    }
+                    if (capabilities.isNotEmpty()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
 //
 //// 1. Data Class
 //data class CapabilityItem(
@@ -232,152 +384,3 @@ import kotlinx.coroutines.flow.asStateFlow
 //    }
 //}
 
-
-data class CapabilityItem(
-    val icon: ImageVector,
-    val title: String,
-    val description: String
-)
-
-class CapabilitiesViewModel : ViewModel() {
-    private val _capabilities = MutableStateFlow<List<CapabilityItem>>(emptyList())
-    val capabilities: StateFlow<List<CapabilityItem>> = _capabilities.asStateFlow()
-
-    init {
-        loadCapabilities()
-    }
-
-    private fun loadCapabilities() {
-        _capabilities.value = listOf(
-            CapabilityItem(Icons.Filled.Settings, "Pengembangan Solusi IT Kustom", "mengembangkan solusi perangkat lunak yang disesuaikan dengan kebutuhan spesifik klien, mulai dari aplikasi mobile hingga sistem manajemen data"),
-            CapabilityItem(Icons.Filled.CloudUpload, "Integrasi Teknologi Modern", "Kami mengintegrasikan teknologi modern seperti AI, Big Data, dan Cloud Computing untuk memberikan solusi yang efisien dan inovatif."),
-            CapabilityItem(Icons.Filled.Security, "Keamanan Cyber", "Kami menawarkan layanan keamanan siber yang komprehensif untuk melindungi data dan infrastruktur IT Anda dari ancaman siber yang terus berkembang."),
-            CapabilityItem(Icons.Filled.Settings, "Dukungan dan Pemeliharaan IT", "Kami menyediakan layanan dukungan teknis dan pemeliharaan sistem berkelanjutan, memastikan infrastruktur IT klien berfungsi optimal dan selalu diperbarui dengan teknologi terbaru.")
-        )
-    }
-}
-
-@Composable
-fun CapabilitiesImageSection() {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(300.dp)
-            .background(Color(0xFFFBCFE8)) // Latar belakang pink muda untuk area gambar
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.smileman),
-            contentDescription = "Our Capabilities Hero",
-            contentScale = ContentScale.Crop,
-            alignment = Alignment.TopCenter,
-            modifier = Modifier.fillMaxSize()
-        )
-    }
-}
-
-@Composable
-fun CapabilitiesTitleContent(orangeColor: Color, darkTextColor: Color) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 20.dp, top = 24.dp, end = 20.dp, bottom = 16.dp),
-        verticalAlignment = Alignment.Top
-    ) {
-        Box(
-            modifier = Modifier
-                .width(5.dp)
-                .height(60.dp)
-                .background(Color.Black)
-        )
-        Spacer(modifier = Modifier.width(12.dp))
-        Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = orangeColor, fontWeight = FontWeight.Bold, fontSize = 28.sp)) {
-                    append("Our Capabilities\n")
-                }
-                withStyle(style = SpanStyle(color = darkTextColor, fontWeight = FontWeight.Bold, fontSize = 28.sp)) {
-                    append("We Provide")
-                }
-            },
-            lineHeight = 34.sp
-        )
-    }
-}
-
-@Composable
-fun CapabilityRowItem(
-    icon: ImageVector,
-    title: String,
-    description: String,
-    iconBackgroundColor: Color,
-    titleColor: Color,
-    descriptionColor: Color
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.Top
-    ) {
-        Box(
-            modifier = Modifier
-                .size(56.dp)
-                .clip(CircleShape)
-                .background(iconBackgroundColor)
-                .padding(12.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = Color.White,
-                modifier = Modifier.size(28.dp)
-            )
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        Column(modifier = Modifier.weight(1f)) {
-            Text(text = title, color = titleColor, fontSize = 18.sp, fontWeight = FontWeight.Bold, lineHeight = 22.sp)
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = description, color = descriptionColor, fontSize = 14.sp, lineHeight = 20.sp)
-        }
-    }
-}
-
-@Preview(showBackground = true, widthDp = 360, name = "Capabilities Content Preview")
-@Composable
-fun CapabilitiesContentPreview() {
-    val capabilitiesViewModel: CapabilitiesViewModel = viewModel()
-    val capabilities by capabilitiesViewModel.capabilities.collectAsState()
-    val orangeColor = Color(0xFFFF6F3E)
-    val darkTextColorForTitle = Color(0xFF333333)
-    val lightPinkBackground = Color(0xFFFFF9F7)
-    val descriptionItemColor = Color(0xFF555555)
-
-    ANTINGANGGURTheme {
-        LazyColumn(modifier = Modifier.background(LightOrange)) {
-            item { CapabilitiesImageSection() }
-            item {
-                Column(modifier = Modifier.fillMaxWidth().background(lightPinkBackground)) {
-                    CapabilitiesTitleContent(orangeColor = orangeColor, darkTextColor = darkTextColorForTitle)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    capabilities.forEachIndexed { index, capability ->
-                        Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                            CapabilityRowItem(
-                                icon = capability.icon,
-                                title = capability.title,
-                                description = capability.description,
-                                iconBackgroundColor = orangeColor,
-                                titleColor = orangeColor,
-                                descriptionColor = descriptionItemColor
-                            )
-                        }
-                        if (index < capabilities.size - 1) {
-                            Spacer(modifier = Modifier.height(24.dp))
-                        }
-                    }
-                    if (capabilities.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(8.dp))
-                    }
-                }
-            }
-        }
-    }
-}

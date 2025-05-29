@@ -47,10 +47,9 @@ fun AboutUsPage(capabilitiesViewModel: CapabilitiesViewModel = viewModel()) {
     val capabilities by capabilitiesViewModel.capabilities.collectAsState()
 
     val members = listOf(
-        TeamMember(1, R.drawable.robby, listOf("Growing Future", "Leader"), "Manager", "Improve well being, grow future leader, become the greatness human"),
-        TeamMember(2, R.drawable.robby, listOf("Tech Visionary", "Architect"), "Chief Architect", "Designing scalable systems and future-proof technologies."),
-        TeamMember(3, R.drawable.robby, listOf("People Champion", "HR"), "HR Head", "Fostering a vibrant culture and empowering our team members."),
-        TeamMember(4, R.drawable.robby, listOf("Creative Mind", "Designer"), "Lead Designer", "Crafting beautiful and intuitive user experiences.")
+        TeamMember(1, R.drawable.robby, listOf("Ravelin Lutfhan"), "Manager", "Improve well being, grow future leader, become the greatness human"),
+        TeamMember(2, R.drawable.robby, listOf("Rizky Amalia"), "Chief Architect", "Designing scalable systems and future-proof technologies."),
+        TeamMember(3, R.drawable.robby, listOf("Rafi Amirudin"), "HR Head", "Fostering a vibrant culture and empowering our team members."),
     )
 
     LazyColumn(
@@ -64,11 +63,19 @@ fun AboutUsPage(capabilitiesViewModel: CapabilitiesViewModel = viewModel()) {
         }
 
         item {
+            Spacer(modifier = Modifier.height(30.dp))
+        }
+
+        item {
             WhatWeDo()
         }
 
         item {
             VisiMisiSectionNew()
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
         item {
@@ -101,6 +108,10 @@ fun AboutUsPage(capabilitiesViewModel: CapabilitiesViewModel = viewModel()) {
                     Spacer(modifier = Modifier.height(8.dp))
                 }
             }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
         }
 
          item {

@@ -31,13 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
+import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
 
 
 @Composable
 fun WhatWeDo() {
     val imageGradientColors = listOf(Color(0xFFFFF6F4), Color(0xFFFFF6F4))
     val descriptionBackgroundColor = Color(0xFFFFF6F4)
-    val bannerOrangeColor = Color(0xFFF9794D)
 
     Column(
         modifier = Modifier
@@ -78,7 +78,7 @@ fun WhatWeDo() {
                     .padding(horizontal = 20.dp)
             ) {
                 WhatWeDoBannerComposable(
-                    backgroundColor = bannerOrangeColor,
+                    backgroundColor = OrangePrimary,
                     text = "What We Do"
                 )
             }

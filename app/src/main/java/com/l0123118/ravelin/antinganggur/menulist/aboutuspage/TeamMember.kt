@@ -238,7 +238,7 @@ fun TeamHeaderSection(
 
             Text(
                 text = "Inspiring change with motivational keynotes,\nWorkshop, and seminar for",
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 color = darkTextColor,
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,

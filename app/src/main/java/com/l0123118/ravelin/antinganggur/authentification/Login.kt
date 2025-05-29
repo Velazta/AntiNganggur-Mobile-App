@@ -185,7 +185,7 @@ fun LoginPage(navController: NavHostController) {
                 }
         )
 
-        var username by remember { mutableStateOf("") }
+        var email by remember { mutableStateOf("") }
         var password by remember { mutableStateOf("") }
         var rememberMe by remember { mutableStateOf(false) }
 
@@ -201,8 +201,8 @@ fun LoginPage(navController: NavHostController) {
 
         // Full Name TextField
         OutlinedTextField(
-            value = username,
-            onValueChange = { username = it },
+            value = email,
+            onValueChange = { email = it },
             placeholder = { Text("Enter your email") },
             singleLine = true,
             shape = RoundedCornerShape(50), // Rounded corners
@@ -261,19 +261,24 @@ fun LoginPage(navController: NavHostController) {
         Row(
             modifier = Modifier
                 .constrainAs(rememberMeRow) {
-                    top.linkTo(passwordField.bottom, margin = 20.dp)
-                    start.linkTo(parent.start, margin = 32.dp)
+                    top.linkTo(passwordField.bottom, margin = 16.dp) // Adjusted margin slightly
+                    start.linkTo(parent.start, margin = 28.dp) // Adjusted margin for checkbox alignment
                 }
-                .clickable { rememberMe = !rememberMe }
+                .clickable { rememberMe = !rememberMe } // Makes the whole row clickable
                 .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier
-                    .size(18.dp)
-                    .background(CheckboxRed, shape = RoundedCornerShape(4.dp))
+            Checkbox(
+                checked = rememberMe,
+                onCheckedChange = { isChecked -> rememberMe = isChecked },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = CheckboxRed, // Your desired color for the checked state
+                    uncheckedColor = TextGray, // Or OrangePrimary.copy(alpha = 0.6f) or any other color
+                    checkmarkColor = Color.White // Color of the check mark
+                ),
+                modifier = Modifier.size(24.dp) // Control the size of the checkbox
             )
-            Spacer(modifier=Modifier.width(8.dp))
+            Spacer(modifier = Modifier.width(6.dp)) // Reduced spacer as Checkbox has some intrinsic padding
 
             Text(
                 text = "Remember me",
