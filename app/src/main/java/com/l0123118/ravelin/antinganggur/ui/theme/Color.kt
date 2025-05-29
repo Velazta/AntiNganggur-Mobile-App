@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 val LightPinkBackground = Color(0xFFFFF8F6)
 val TextFieldGray = Color(0xFFF0F0F0)
-val OrangePrimary = Color(0xFFFD7A5A)
+val OrangePrimary = Color(0xFFFF7144)
 val PinkSecondary = Color(0xFFE8518F)
 val TextColorPrimary = Color(0xFF333333)
 val TextColorSecondary = Color.Gray

@@ -1,14 +1,10 @@
-package com.l0123118.ravelin.antinganggur
+package com.l0123118.ravelin.antinganggur.navigation
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +26,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.l0123118.ravelin.antinganggur.AntiNganggurApp
+import com.l0123118.ravelin.antinganggur.authentification.LoginPage
+import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
+import com.l0123118.ravelin.antinganggur.authentification.navigateToLogin
+import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
+import com.l0123118.ravelin.antinganggur.authentification.navigateToSignUp
+import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
+import com.l0123118.ravelin.antinganggur.R
+import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
@@ -70,6 +76,10 @@ fun AppNavHost(
         composable(Screen.LowonganScreen.route) {
             LowonganScreen()
         }
+        composable(Screen.AboutUs.route) {
+            AboutUsPage()
+        }
+
     }
 }
 
@@ -103,7 +113,7 @@ fun AppTopBar(
                 }
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logoantinganggur), // Pastikan drawable ini ada
+                    painter = painterResource(id = R.drawable.logoantinganggur),
                     contentDescription = "Logo AntiNganggur",
                     modifier = Modifier.size(32.dp)
                 )
@@ -123,8 +133,8 @@ fun AppTopBar(
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.White,
-            titleContentColor = AntiNganggurDarkGray, // Fallback, overridden by SpanStyle
-            navigationIconContentColor = Color.Unspecified, // Important for painterResource
+            titleContentColor = AntiNganggurDarkGray,
+            navigationIconContentColor = Color.Unspecified,
             actionIconContentColor = AntiNganggurDarkGray
         )
     )
@@ -135,7 +145,7 @@ fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp), // Increased padding for better visual separation
+            .padding(vertical = 32.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
