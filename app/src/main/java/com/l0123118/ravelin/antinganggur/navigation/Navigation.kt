@@ -1,14 +1,10 @@
-package com.l0123118.ravelin.antinganggur
+package com.l0123118.ravelin.antinganggur.navigation
 
 import android.content.Context
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -30,6 +26,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.l0123118.ravelin.antinganggur.AntiNganggurApp
+import com.l0123118.ravelin.antinganggur.authentification.LoginPage
+import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
+import com.l0123118.ravelin.antinganggur.authentification.navigateToLogin
+import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
+import com.l0123118.ravelin.antinganggur.authentification.navigateToSignUp
+import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
+import com.l0123118.ravelin.antinganggur.R
+import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
@@ -43,7 +49,7 @@ import kotlinx.coroutines.launch
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
-    innerPadding: PaddingValues // innerPadding dari Scaffold
+    innerPadding: PaddingValues
 ) {
     NavHost(
         navController = navController,
@@ -70,6 +76,10 @@ fun AppNavHost(
         composable(Screen.LowonganScreen.route) {
             LowonganScreen()
         }
+        composable(Screen.AboutUs.route) {
+            AboutUsPage()
+        }
+
     }
 }
 
@@ -103,7 +113,7 @@ fun AppTopBar(
                 }
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logoantinganggur), // Pastikan drawable ini ada
+                    painter = painterResource(id = R.drawable.logoantinganggur),
                     contentDescription = "Logo AntiNganggur",
                     modifier = Modifier.size(32.dp)
                 )
@@ -123,8 +133,8 @@ fun AppTopBar(
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.White,
-            titleContentColor = AntiNganggurDarkGray, // Fallback, overridden by SpanStyle
-            navigationIconContentColor = Color.Unspecified, // Important for painterResource
+            titleContentColor = AntiNganggurDarkGray,
+            navigationIconContentColor = Color.Unspecified,
             actionIconContentColor = AntiNganggurDarkGray
         )
     )
@@ -135,7 +145,7 @@ fun DrawerHeader() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 32.dp), // Increased padding for better visual separation
+            .padding(vertical = 32.dp),
         contentAlignment = Alignment.Center
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -146,7 +156,6 @@ fun DrawerHeader() {
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = "AntiNganggur", fontWeight = FontWeight.Bold, fontSize = 18.sp, color = AntiNganggurOrange)
-            Text(text = "info@antinyanggur.com", fontSize = 14.sp, color = Color.Gray)
         }
     }
 }
@@ -158,7 +167,7 @@ fun DrawerBody(
     drawerState: DrawerState,
     modifier: Modifier = Modifier,
     context: Context,
-    previewSelectedRoute: String? = null // Parameter baru untuk preview
+    previewSelectedRoute: String? = null
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = previewSelectedRoute ?: navBackStackEntry?.destination?.route
@@ -168,14 +177,14 @@ fun DrawerBody(
             NavigationDrawerItem(
                 icon = {
                     Icon(
-                        imageVector = item.icon, // Using icon from Screen object
+                        imageVector = item.icon,
                         contentDescription = item.title
                     )
                 },
                 label = { Text(item.title) },
                 selected = currentRoute == item.route,
                 onClick = {
-                    if (previewSelectedRoute == null) { // Only act if not in preview with forced selection
+                    if (previewSelectedRoute == null) {
                         scope.launch {
                             drawerState.close()
                         }
@@ -229,7 +238,7 @@ fun DrawerBodyPreview() {
         val navController = rememberNavController()
         val scope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-        ModalDrawerSheet { // Added ModalDrawerSheet for realistic preview context
+        ModalDrawerSheet {
             DrawerBody(
                 navController = navController,
                 scope = scope,
@@ -253,7 +262,7 @@ fun DrawerBodyItemSelectedPreview() {
                 scope = scope,
                 drawerState = drawerState,
                 context = LocalContext.current,
-                previewSelectedRoute = Screen.Login.route // Manually select "Login" for preview
+                previewSelectedRoute = Screen.Login.route
             )
         }
     }
@@ -287,8 +296,6 @@ fun FullAppStructurePreview_DrawerClosed() {
                     AppTopBar(scope = scope, drawerState = drawerState)
                 },
                 content = { innerPadding ->
-                    // For preview, showing a generic content.
-                    // In real app, this would be AppNavHost.
                     Box(
                         modifier = Modifier
                             .padding(innerPadding)
@@ -309,7 +316,6 @@ fun FullAppStructurePreview_DrawerClosed() {
 fun FullAppStructurePreview_DrawerOpen() {
     ANTINGANGGURTheme {
         val navController = rememberNavController()
-        // Start with drawer open for this preview
         val drawerState = rememberDrawerState(initialValue = DrawerValue.Open)
         val scope = rememberCoroutineScope()
 
@@ -327,7 +333,7 @@ fun FullAppStructurePreview_DrawerOpen() {
                     )
                 }
             },
-            gesturesEnabled = true // Allow closing by swipe for interaction in preview
+            gesturesEnabled = true
         ) {
             Scaffold(
                 topBar = {
@@ -353,7 +359,6 @@ fun FullAppStructurePreview_DrawerOpen() {
 fun AppNavHostPreview() {
     ANTINGANGGURTheme {
         val navController = rememberNavController()
-        // Simulate innerPadding, usually from Scaffold
         AppNavHost(navController = navController, innerPadding = PaddingValues(0.dp))
     }
 }

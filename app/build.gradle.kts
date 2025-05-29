@@ -51,7 +51,8 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core") // Untuk ikon dasar
     implementation("androidx.compose.material:material-icons-extended") // Untuk ikon lebih banyak (opsional, tapi ArrowBack ada di core)
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1") // Cek versi terbaru
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0") // Cek versi terbaru
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0") // Cek versi terbaru
     implementation("androidx.activity:activity-compose:1.9.0") // Cek versi terbaru
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.04.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")

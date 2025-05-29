@@ -26,22 +26,25 @@
         </activity>
 
         <activity
-            android:name=".SignIn"
+            android:name=".authentification.SignIn"
             android:exported="false"
             android:label="@string/app_name" />
 
         <activity
-            android:name=".Login"
+            android:name=".authentification.Login"
             android:exported="false"
             android:label="@string/app_name"/>
 
         <activity
-            android:name=".Contact"
+            android:name=".menulist.contactpage.Contact"
             android:exported="false"
             android:label="@string/app_name"/>
 
-<!--        <activity -->
-<!--            android:name=".Lowongan"-->
+        <activity
+            android:name=".menulist.aboutuspage.AboutUs"
+            android:exported="false"
+            android:label="@string/app_name"/>
+
 
 
     </application>

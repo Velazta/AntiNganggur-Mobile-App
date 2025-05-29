@@ -1,4 +1,4 @@
-package com.l0123118.ravelin.antinganggur
+package com.l0123118.ravelin.antinganggur.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
@@ -15,6 +15,7 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object SignIn : Screen("signin", "Sign In", Icons.Filled.PersonAdd)
     object ContactPage : Screen("contact", "Contact Page", Icons.Filled.PhoneIphone)
     object LowonganScreen : Screen("lowongan", "Lowongan", Icons.Filled.Work)
+    object AboutUs : Screen("aboutuspage", "About Us", Icons.Filled.PersonAdd)
 }
 
 // Daftar item untuk drawer menu
@@ -24,5 +25,6 @@ val drawerMenuItems = listOf(
     Screen.SignIn,
     Screen.LowonganScreen,
     Screen.ContactPage,
+    Screen.AboutUs,
 
 )

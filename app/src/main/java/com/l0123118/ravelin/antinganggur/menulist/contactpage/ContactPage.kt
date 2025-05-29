@@ -1,4 +1,4 @@
-package com.l0123118.ravelin.antinganggur
+package com.l0123118.ravelin.antinganggur.menulist.contactpage
 
 
 import android.content.Intent
@@ -22,59 +22,30 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material.icons.automirrored.outlined.Send
-import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.outlined.AccessTime
-import androidx.compose.material.icons.outlined.AlternateEmail
 import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Send
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.input.ImeAction
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.l0123118.ravelin.antinganggur.ui.theme.TextColorPrimary
-import com.l0123118.ravelin.antinganggur.ui.theme.LightPinkBackground
-import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldGray
-import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
-import com.l0123118.ravelin.antinganggur.ui.theme.PinkSecondary
-import com.l0123118.ravelin.antinganggur.ui.theme.TextColorSecondary
-import com.l0123118.ravelin.antinganggur.ui.theme.TextFieldBackground
-import com.l0123118.ravelin.antinganggur.ui.theme.AppOrange
-import com.l0123118.ravelin.antinganggur.ui.theme.AppMagenta
-import com.l0123118.ravelin.antinganggur.ui.theme.TextGray
-import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientStart
-import com.l0123118.ravelin.antinganggur.ui.theme.BannerGradientEnd
-import com.l0123118.ravelin.antinganggur.ui.theme.CheckboxRed
+import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 
 class Contact : ComponentActivity() {
@@ -90,7 +61,7 @@ class Contact : ComponentActivity() {
 }
 
 val OrangePeel = Color(0xFFFF7144)
-val LightPeach = Color(0xFFFFF6F4) // Perkiraan warna background utama
+val LightPeach = Color(0xFFFFF6F4)
 val DarkText = Color(0xFF333333)
 val MediumGrayText = Color(0xFF757575)
 val LightGrayBorder = Color(0xFFE0E0E0)

@@ -1,6 +1,5 @@
-package com.l0123118.ravelin.antinganggur
+package com.l0123118.ravelin.antinganggur.menulist.lowonganpage
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.BorderStroke
+import androidx.lifecycle.ViewModel
+import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.ui.theme.PrimaryOrange
 import com.l0123118.ravelin.antinganggur.ui.theme.LightOrange
 import com.l0123118.ravelin.antinganggur.ui.theme.BackgroundOrange
@@ -40,7 +41,7 @@ data class Job(
 )
 
 // viewModel buat mengelola data lowongan pekerjaan
-class JobViewModel : androidx.lifecycle.ViewModel() {
+class JobViewModel : ViewModel() {
     private val _trendingJobs = mutableStateListOf<Job>()
     val trendingJobs: List<Job> get() = _trendingJobs
 
