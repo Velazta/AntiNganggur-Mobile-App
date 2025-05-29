@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -52,7 +51,7 @@ fun AppNavHost(
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route, // Menggunakan route dari AppDestination.kt
-        modifier = modifier.padding(innerPadding) // Terapkan padding di sini
+        modifier = modifier.padding(innerPadding)
     ) {
         composable(Screen.Home.route) {
 
