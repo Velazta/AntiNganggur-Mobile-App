@@ -202,7 +202,16 @@ fun DrawerBody(
                         }
                     }
                 },
-                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = AntiNganggurOrange,
+                    selectedTextColor = Color.White,
+                    selectedIconColor = Color.White,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedTextColor = AntiNganggurDarkGray,
+                    unselectedIconColor = AntiNganggurDarkGray
+                )
+
             )
         }
     }
