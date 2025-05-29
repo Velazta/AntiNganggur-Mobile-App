@@ -29,9 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.AntiNganggurApp
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
-import com.l0123118.ravelin.antinganggur.authentification.navigateToLogin
 import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
-import com.l0123118.ravelin.antinganggur.authentification.navigateToSignUp
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.R
@@ -87,10 +85,10 @@ fun AppNavHost(
 @Composable
 fun AppTopBar(
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    navController: NavController
 
 ) {
-    val context = LocalContext.current
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -109,7 +107,13 @@ fun AppTopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navigateToMainActivity(context)
+                    navController.navigate(Screen.Home.route) {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
                 }
             ) {
                 Image(
@@ -166,7 +170,7 @@ fun DrawerBody(
     scope: CoroutineScope,
     drawerState: DrawerState,
     modifier: Modifier = Modifier,
-    context: Context,
+    // context: Context, // Hapus context jika tidak digunakan
     previewSelectedRoute: String? = null
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -184,7 +188,7 @@ fun DrawerBody(
                 label = { Text(item.title) },
                 selected = currentRoute == item.route,
                 onClick = {
-                    if (previewSelectedRoute == null) {
+                    if (previewSelectedRoute == null) { // Hanya lakukan navigasi jika bukan mode preview item
                         scope.launch {
                             drawerState.close()
                         }
@@ -195,12 +199,6 @@ fun DrawerBody(
                                 }
                                 launchSingleTop = true
                                 restoreState = true
-                            }
-                            if(item.route == Screen.Login.route) {
-                                navigateToLogin(context)
-                            }
-                            else if(item.route == Screen.SignIn.route) {
-                                navigateToSignUp(context)
                             }
                         }
                     }
@@ -219,7 +217,7 @@ fun AppTopBarPreview() {
     ANTINGANGGURTheme {
         val scope = rememberCoroutineScope()
         val drawerState = rememberDrawerState(DrawerValue.Closed)
-        AppTopBar(scope = scope, drawerState = drawerState)
+        AppTopBar(scope = scope, drawerState = drawerState, navController = rememberNavController())
     }
 }
 
@@ -243,7 +241,7 @@ fun DrawerBodyPreview() {
                 navController = navController,
                 scope = scope,
                 drawerState = drawerState,
-                context = LocalContext.current
+
             )
         }
     }
@@ -261,7 +259,7 @@ fun DrawerBodyItemSelectedPreview() {
                 navController = navController,
                 scope = scope,
                 drawerState = drawerState,
-                context = LocalContext.current,
+
                 previewSelectedRoute = Screen.Login.route
             )
         }
@@ -286,14 +284,14 @@ fun FullAppStructurePreview_DrawerClosed() {
                         navController = navController,
                         scope = scope,
                         drawerState = drawerState,
-                        context = LocalContext.current,
+
                     )
                 }
             }
         ) {
             Scaffold(
                 topBar = {
-                    AppTopBar(scope = scope, drawerState = drawerState)
+                    AppTopBar(scope = scope, drawerState = drawerState, navController = rememberNavController())
                 },
                 content = { innerPadding ->
                     Box(
@@ -328,7 +326,7 @@ fun FullAppStructurePreview_DrawerOpen() {
                         navController = navController,
                         scope = scope,
                         drawerState = drawerState,
-                        context = LocalContext.current,
+
                         previewSelectedRoute = Screen.Home.route // Show Home as selected
                     )
                 }
@@ -337,7 +335,7 @@ fun FullAppStructurePreview_DrawerOpen() {
         ) {
             Scaffold(
                 topBar = {
-                    AppTopBar(scope = scope, drawerState = drawerState)
+                    AppTopBar(scope = scope, drawerState = drawerState, navController = rememberNavController())
                 },
                 content = { innerPadding ->
                     Box(

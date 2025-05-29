@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.MainActivity
@@ -70,7 +71,7 @@ class Login : ComponentActivity() {
 }
 
 @Composable
-fun LoginPage(navController: NavHostController) {
+fun LoginPage(navController: NavController) {
     val configuration = LocalConfiguration.current
     val screenHeight = configuration.screenHeightDp.dp
     val context = LocalContext.current

@@ -13,11 +13,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.navigation.AppNavHost
 import com.l0123118.ravelin.antinganggur.navigation.AppTopBar
 import com.l0123118.ravelin.antinganggur.navigation.DrawerBody
 import com.l0123118.ravelin.antinganggur.navigation.DrawerHeader
+import com.l0123118.ravelin.antinganggur.navigation.Screen
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,8 +32,17 @@ class MainActivity : ComponentActivity() {
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val scope = rememberCoroutineScope()
 
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
+                val showNavigationUI = currentRoute !in listOf(
+                    Screen.Login.route,
+                    Screen.SignIn.route
+                )
+
                 ModalNavigationDrawer(
                     drawerState = drawerState,
+                    gesturesEnabled = showNavigationUI,
                     drawerContent = {
                         ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
                             // Memanggil DrawerHeader dari Navigation.kt
@@ -42,34 +53,37 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 scope = scope,
                                 drawerState = drawerState,
-                                context = LocalContext.current
                             )
                         }
                     }
                 ) {
                     Scaffold(
                         topBar = {
-                            // Memanggil AppTopBar dari Navigation.kt
-                            AppTopBar(
-                                scope = scope,
-                                drawerState = drawerState
+                            if (showNavigationUI) {
+                                AppTopBar(
+                                    scope = scope,
+                                    drawerState = drawerState,
+                                    navController = navController
+                                )
+                            }
+                        },
+                        content = { innerPadding -> // innerPadding dari Scaffold
+                            // AppNavHost akan menangani paddingnya sendiri
+                            AppNavHost(
+                                navController = navController,
+                                innerPadding = if (showNavigationUI) innerPadding else PaddingValues(
+                                    0.dp
+                                ),
+                                modifier = Modifier.fillMaxSize()
                             )
                         }
-                    ) { innerPadding ->
-                        // Memanggil AppNavHost dari Navigation.kt
-                        AppNavHost(
-                            navController = navController,
-                            innerPadding = innerPadding
-                        )
-                    }
+                    )
                 }
             }
         }
     }
 }
 
-// Composable AntiNganggurApp ini digunakan sebagai konten untuk Screen.Home
-// di AppNavHost (Navigation.kt). Pastikan ini konsisten.
 @Composable
 fun AntiNganggurApp(navController: NavController) {
     Column(
