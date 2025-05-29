@@ -14,6 +14,7 @@ val LightPinkBackground = Color(0xFFFFF8F6)
 val TextFieldGray = Color(0xFFF0F0F0)
 val OrangePrimary = Color(0xFFFF7144)
 val TextColorPrimary = Color(0xFF333333)
+val TextColorSecondary = Color.Gray
 val AppOrange = Color(0xFFFF6F48)
 val AppMagenta = Color(0xFFBD3B9F)
 val TextGray = Color(0xFF8A8A8A)

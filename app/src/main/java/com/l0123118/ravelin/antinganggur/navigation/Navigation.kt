@@ -26,7 +26,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.l0123118.ravelin.antinganggur.AntiNganggurApp
+import com.l0123118.ravelin.antinganggur.menulist.mainpage.Home
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
 import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
@@ -56,7 +56,7 @@ fun AppNavHost(
     ) {
         composable(Screen.Home.route) {
 
-            AntiNganggurApp(navController = navController)
+            Home(navController = navController)
         }
         composable(Screen.Login.route) {
 
@@ -170,7 +170,6 @@ fun DrawerBody(
     scope: CoroutineScope,
     drawerState: DrawerState,
     modifier: Modifier = Modifier,
-    // context: Context, // Hapus context jika tidak digunakan
     previewSelectedRoute: String? = null
 ) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -188,7 +187,7 @@ fun DrawerBody(
                 label = { Text(item.title) },
                 selected = currentRoute == item.route,
                 onClick = {
-                    if (previewSelectedRoute == null) { // Hanya lakukan navigasi jika bukan mode preview item
+                    if (previewSelectedRoute == null) {
                         scope.launch {
                             drawerState.close()
                         }
@@ -209,7 +208,7 @@ fun DrawerBody(
     }
 }
 
-// --- PREVIEWS ---
+// PRIPIWW
 
 @Preview(showBackground = true)
 @Composable
@@ -242,7 +241,7 @@ fun DrawerBodyPreview() {
                 scope = scope,
                 drawerState = drawerState,
 
-            )
+                )
         }
     }
 }
@@ -285,7 +284,7 @@ fun FullAppStructurePreview_DrawerClosed() {
                         scope = scope,
                         drawerState = drawerState,
 
-                    )
+                        )
                 }
             }
         ) {
@@ -360,8 +359,3 @@ fun AppNavHostPreview() {
         AppNavHost(navController = navController, innerPadding = PaddingValues(0.dp))
     }
 }
-
-
-
-
-
