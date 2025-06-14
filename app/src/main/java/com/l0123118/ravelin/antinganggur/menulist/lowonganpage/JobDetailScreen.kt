@@ -277,24 +277,7 @@ fun JobDetailContent(job: Job, paddingValues: PaddingValues) {
             }
         }
 
-        // Working hours section
-        SectionCard(title = "Jadwal Kerja") {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                WorkingHoursItem(
-                    title = "Hari Kerja",
-                    value = if (job.type.contains("Part")) "Senin - Jumat" else "Senin - Minggu"
-                )
-                WorkingHoursItem(
-                    title = "Jam Kerja",
-                    value = if (job.type.contains("Part")) "09:00 - 15:00" else "08:00 - 17:00"
-                )
-            }
-        }
-
-        // Apply button
+        // Working hours section with Apply button
         Card(
             modifier = Modifier
                 .fillMaxWidth()
@@ -303,22 +286,44 @@ fun JobDetailContent(job: Job, paddingValues: PaddingValues) {
             elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
             shape = RoundedCornerShape(12.dp)
         ) {
-            Button(
-                onClick = { /* TODO: Handle apply action */ },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-                    .height(52.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
-                shape = RoundedCornerShape(12.dp),
-                elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
-            ) {
+            Column(modifier = Modifier.padding(20.dp)) {
                 Text(
-                    text = "LAMAR SEKARANG",
-                    fontSize = 16.sp,
+                    text = "Jadwal Kerja",
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = Color(0xFF1A1A1A)
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    WorkingHoursItem(
+                        title = "Hari Kerja",
+                        value = if (job.type.contains("Part")) "Senin - Jumat" else "Senin - Minggu"
+                    )
+                    WorkingHoursItem(
+                        title = "Jam Kerja",
+                        value = if (job.type.contains("Part")) "09:00 - 15:00" else "08:00 - 17:00"
+                    )
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    onClick = { /* TODO: Handle apply action */ },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(52.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary),
+                    shape = RoundedCornerShape(12.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 0.dp)
+                ) {
+                    Text(
+                        text = "LAMAR SEKARANG",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White
+                    )
+                }
             }
         }
 
@@ -699,3 +704,4 @@ fun JobDetailScreenPreview() {
         )
     }
 }
+
