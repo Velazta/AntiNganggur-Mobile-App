@@ -10,7 +10,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -22,16 +21,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.l0123118.ravelin.antinganggur.menulist.mainpage.Home
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
 import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
@@ -39,9 +41,6 @@ import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
-
-
 
 @Composable
 fun AppNavHost(
@@ -52,32 +51,34 @@ fun AppNavHost(
     NavHost(
         navController = navController,
         startDestination = Screen.Home.route, // Menggunakan route dari AppDestination.kt
-        modifier = modifier.padding(innerPadding) // Terapkan padding di sini
+        modifier = modifier.padding(innerPadding)
     ) {
         composable(Screen.Home.route) {
-
             Home(navController = navController)
         }
         composable(Screen.Login.route) {
-
             LoginPage(navController = navController)
         }
         composable(Screen.SignIn.route) {
-
             SignInPage2(navController = navController)
         }
-
         composable(Screen.ContactPage.route) {
             ContactPage(navController = navController)
         }
-
         composable(Screen.LowonganScreen.route) {
-            LowonganScreen()
+            LowonganScreen(navController = navController)
         }
         composable(Screen.AboutUs.route) {
             AboutUsPage()
         }
-
+        composable(
+            route = Screen.JobDetail.route,
+            arguments = listOf(navArgument("jobId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobId = backStackEntry.arguments?.getString("jobId")
+            println("Navigation: Navigating to JobDetail with jobId = $jobId")
+            JobDetailScreen(navController = navController, jobId = jobId)
+        }
     }
 }
 
@@ -87,7 +88,6 @@ fun AppTopBar(
     scope: CoroutineScope,
     drawerState: DrawerState,
     navController: NavController
-
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -202,13 +202,19 @@ fun DrawerBody(
                         }
                     }
                 },
-                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding)
+                modifier = Modifier.padding(NavigationDrawerItemDefaults.ItemPadding),
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = AntiNganggurOrange,
+                    selectedTextColor = Color.White,
+                    selectedIconColor = Color.White,
+                    unselectedContainerColor = Color.Transparent,
+                    unselectedTextColor = AntiNganggurDarkGray,
+                    unselectedIconColor = AntiNganggurDarkGray
+                )
             )
         }
     }
 }
-
-// PRIPIWW
 
 @Preview(showBackground = true)
 @Composable
@@ -239,9 +245,8 @@ fun DrawerBodyPreview() {
             DrawerBody(
                 navController = navController,
                 scope = scope,
-                drawerState = drawerState,
-
-                )
+                drawerState = drawerState
+            )
         }
     }
 }
@@ -258,8 +263,7 @@ fun DrawerBodyItemSelectedPreview() {
                 navController = navController,
                 scope = scope,
                 drawerState = drawerState,
-
-                previewSelectedRoute = Screen.Login.route
+                previewSelectedRoute = Screen.Login.route // Show Login as selected
             )
         }
     }
@@ -282,9 +286,8 @@ fun FullAppStructurePreview_DrawerClosed() {
                     DrawerBody(
                         navController = navController,
                         scope = scope,
-                        drawerState = drawerState,
-
-                        )
+                        drawerState = drawerState
+                    )
                 }
             }
         ) {
@@ -325,7 +328,6 @@ fun FullAppStructurePreview_DrawerOpen() {
                         navController = navController,
                         scope = scope,
                         drawerState = drawerState,
-
                         previewSelectedRoute = Screen.Home.route // Show Home as selected
                     )
                 }

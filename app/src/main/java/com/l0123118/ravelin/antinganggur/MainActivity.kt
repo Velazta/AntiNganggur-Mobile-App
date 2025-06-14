@@ -31,10 +31,13 @@ class MainActivity : ComponentActivity() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = navBackStackEntry?.destination?.route
 
+                // Check if the current route is a job detail route
+                val isJobDetailRoute = currentRoute?.startsWith("job_detail/") ?: false
+
                 val showNavigationUI = currentRoute !in listOf(
                     Screen.Login.route,
                     Screen.SignIn.route
-                )
+                ) && !isJobDetailRoute
 
                 ModalNavigationDrawer(
                     drawerState = drawerState,
