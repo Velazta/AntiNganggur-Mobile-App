@@ -28,7 +28,6 @@ import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.menulist.mainpage.Home
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
-import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.R
