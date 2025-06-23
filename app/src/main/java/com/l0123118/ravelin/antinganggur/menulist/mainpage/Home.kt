@@ -41,6 +41,7 @@ import androidx.navigation.compose.rememberNavController
 import com.l0123118.ravelin.antinganggur.navigation.Screen
 import com.l0123118.ravelin.antinganggur.ui.theme.*
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPeach
+import androidx.compose.material3.OutlinedButton
 
 @Composable
 fun Home(navController: NavController) {
@@ -202,7 +203,8 @@ fun JobSection(navController: NavController) {
             jobType = "Full-Time",
             salary = "Rp15-25jt/Bulan",
             description = "Membutuhkan Frontend Developer Berpengalaman React.Js Untuk Membangun Antarmuka Web Yang Responsif, Menarik, Dan Mudah Digunakan. Kandidat Harus Memahami Integrasi API, Version Control, Dan Prinsip Desain UI Yang Baik.",
-            iconResId = R.drawable.frontend
+            iconResId = R.drawable.frontend,
+            navController = navController
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -214,7 +216,8 @@ fun JobSection(navController: NavController) {
             jobType = "Full-Time",
             salary = "Rp18-30jt/Bulan",
             description = "Mencari Data Scientist yang mahir dalam analisis data, machine learning, dan membangun model prediktif untuk memecahkan masalah bisnis.",
-            iconResId = R.drawable.datascientist
+            iconResId = R.drawable.datascientist,
+            navController = navController
         )
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -226,7 +229,8 @@ fun JobSection(navController: NavController) {
             jobType = "Part-Time",
             salary = "Rp10-15jt/Bulan",
             description = "Mencari Cyber Security Analyst untuk memantau, mendeteksi, dan merespons ancaman keamanan siber, serta melindungi sistem dan data perusahaan.",
-            iconResId = R.drawable.cyberanalyst
+            iconResId = R.drawable.cyberanalyst,
+            navController = navController
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -255,7 +259,8 @@ fun JobCard(
     jobType: String,
     salary: String,
     description: String,
-    iconResId: Int
+    iconResId: Int,
+    navController: NavController
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
@@ -272,7 +277,7 @@ fun JobCard(
                 Image(
                     painter = painterResource(id = iconResId), // Menggunakan iconResId yang diberikan
                     contentDescription = "Job Icon",
-                    modifier = Modifier.size(40.dp)
+                    modifier =  Modifier.size(40.dp)
                 )
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
@@ -372,28 +377,44 @@ fun JobCard(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = { /* TO DO */ },
+                    onClick = {
+                        navController.navigate(Screen.JobDetail.createRoute(title))
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-                    modifier = Modifier.width(120.dp)
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier.width(110.dp)
                 ) {
-                    Text(text = "Lamar", color = Color.White, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Lamar",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                Button(
-                    onClick = { /* TO DO */ },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                    border = ButtonDefaults.outlinedButtonBorder.copy(brush = Brush.horizontalGradient(listOf(PrimaryOrange, PrimaryOrange))),
+                OutlinedButton(
+                    onClick = {
+                        navController.navigate(Screen.JobDetail.createRoute(title))
+                    },
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryOrange),
+                    border = BorderStroke(1.dp, PrimaryOrange),
                     shape = RoundedCornerShape(8.dp),
-                    contentPadding = PaddingValues(horizontal = 24.dp, vertical = 8.dp),
-                    modifier = Modifier.width(120.dp)
+                    contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+                    modifier = Modifier.width(110.dp)
                 ) {
-                    Text(text = "Lihat Detail", color = PrimaryOrange, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = "Lihat Detail",
+                        color = PrimaryOrange,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp
+                    )
                 }
             }
         }

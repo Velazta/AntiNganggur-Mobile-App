@@ -16,6 +16,13 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object ContactPage : Screen("contact", "Contact Page", Icons.Filled.PhoneIphone)
     object LowonganScreen : Screen("lowongan", "Lowongan", Icons.Filled.Work)
     object AboutUs : Screen("aboutuspage", "About Us", Icons.Filled.PersonAdd)
+    object JobDetail : Screen("job_detail/{jobId}", "Detail Lowongan", Icons.Filled.Work) {
+        fun createRoute(jobId: String): String {
+            // URL encode the jobId to handle special characters
+            val encodedJobId = java.net.URLEncoder.encode(jobId, "UTF-8")
+            return "job_detail/$encodedJobId"
+        }
+    }
 }
 
 // Daftar item untuk drawer menu
@@ -26,5 +33,4 @@ val drawerMenuItems = listOf(
     Screen.LowonganScreen,
     Screen.ContactPage,
     Screen.AboutUs,
-
 )

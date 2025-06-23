@@ -35,6 +35,8 @@ class AboutUs : ComponentActivity() {
     }
 }
 
+//About us
+
 @Composable
 fun AboutUsPage(capabilitiesViewModel: CapabilitiesViewModel = viewModel()) {
     val orangeColor = Color(0xFFFF6F3E)
