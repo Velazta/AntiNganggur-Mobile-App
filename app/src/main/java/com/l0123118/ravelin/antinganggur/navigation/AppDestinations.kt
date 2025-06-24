@@ -1,6 +1,7 @@
 package com.l0123118.ravelin.antinganggur.navigation
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Login
 import androidx.compose.material.icons.filled.PersonAdd
@@ -16,18 +17,27 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object ContactPage : Screen("contact", "Contact Page", Icons.Filled.PhoneIphone)
     object LowonganScreen : Screen("lowongan", "Lowongan", Icons.Filled.Work)
     object AboutUs : Screen("aboutuspage", "About Us", Icons.Filled.PersonAdd)
-    object JobDetail : Screen("job_detail/{jobId}", "Detail Lowongan", Icons.Filled.Work) {
+    object Profile : Screen("profile", "Profil Saya", Icons.Filled.AccountCircle)
+    object JobDetail : Screen("job_detail/{jobId}", "Detail Lowongan", Icons.Filled.Work)
+    {
         fun createRoute(jobId: String): String {
             // URL encode the jobId to handle special characters
             val encodedJobId = java.net.URLEncoder.encode(jobId, "UTF-8")
             return "job_detail/$encodedJobId"
         }
     }
+
+    // Definisikan juga screen untuk sub-menu profil agar navigasi nanti lebih mudah
+    object Biodata : Screen("profile/biodata", "Biodata", Icons.Default.AccountCircle)
+    object Experience : Screen("profile/experience", "Pengalaman Kerja", Icons.Default.Work)
+    object Education : Screen("profile/education", "Pendidikan", Icons.Default.Work) // Ganti ikon jika perlu
+    object UploadCV : Screen("profile/cv", "Upload CV", Icons.Default.Work) // Ganti ikon jika perlu
 }
 
 // Daftar item untuk drawer menu
 val drawerMenuItems = listOf(
     Screen.Home,
+    Screen.Profile,
     Screen.Login,
     Screen.SignIn,
     Screen.LowonganScreen,

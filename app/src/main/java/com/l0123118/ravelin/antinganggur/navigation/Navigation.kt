@@ -36,6 +36,7 @@ import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.ProfileScreen
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
@@ -71,6 +72,10 @@ fun AppNavHost(
         composable(Screen.AboutUs.route) {
             AboutUsPage()
         }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController)
+        }
+        
         composable(
             route = Screen.JobDetail.route,
             arguments = listOf(navArgument("jobId") { type = NavType.StringType })
