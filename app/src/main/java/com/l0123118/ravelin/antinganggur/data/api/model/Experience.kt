@@ -7,7 +7,7 @@ data class Experience(
     val id: Int,
 
     @SerializedName("user_id")
-    val userId: Int,
+    val userId: Int? = null,
 
     @SerializedName("job_title")
     val jobTitle: String,
@@ -33,8 +33,8 @@ data class Experience(
     @SerializedName("end_year")
     val endYear: Int?,
 
-    @SerializedName("current_job")
-    val currentJob: Boolean,
+    @SerializedName("is_current_job")
+    val isCurrentJob: Boolean,
 
     @SerializedName("description")
     val description: String?,

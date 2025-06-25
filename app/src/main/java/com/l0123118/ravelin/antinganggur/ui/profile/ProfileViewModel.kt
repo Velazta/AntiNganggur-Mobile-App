@@ -57,7 +57,7 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
             try {
                 repository.checkAndRegisterGuestIfNeeded()
                 fetchUserProfile()
-//                fetchUserExperiences()
+                fetchUserExperiences()
 //                fetchUserEducations()
             } catch (e: Exception) {
                 _profileState.value = ProfileUiState.Error("Gagal melakukan autentikasi awal.")
@@ -77,29 +77,30 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
         }
     }
 
-//    fun fetchUserExperiences() {
-//        _experienceState.value = ExperienceUiState.Loading
-//        viewModelScope.launch {
-//            try {
-//                val experiences = repository.getExperiences()
-//                _experienceState.value = ExperienceUiState.Success(experiences)
-//            } catch (e: Exception) {
-//                _experienceState.value = ExperienceUiState.Error("Gagal memuat pengalaman kerja.")
-//            }
-//        }
-//    }
 
-//    fun fetchUserEducations() {
-//        _educationState.value = EducationUiState.Loading
-//        viewModelScope.launch {
-//            try {
-//                val educations = repository.getEducations()
-//                _educationState.value = EducationUiState.Success(educations)
-//            } catch (e: Exception) {
-//                _educationState.value = EducationUiState.Error("Gagal memuat riwayat pendidikan.")
-//            }
-//        }
-//    }
+    fun fetchUserExperiences() {
+        _experienceState.value = ExperienceUiState.Loading
+        viewModelScope.launch {
+            try {
+                val experiences = repository.getExperiences()
+                _experienceState.value = ExperienceUiState.Success(experiences)
+            } catch (e: Exception) {
+                _experienceState.value = ExperienceUiState.Error("Gagal memuat pengalaman kerja.")
+            }
+        }
+    }
+
+    fun fetchUserEducations() {
+        _educationState.value = EducationUiState.Loading
+        viewModelScope.launch {
+            try {
+                val educations = repository.getEducations()
+                _educationState.value = EducationUiState.Success(educations)
+            } catch (e: Exception) {
+                _educationState.value = EducationUiState.Error("Gagal memuat riwayat pendidikan.")
+            }
+        }
+    }
 
 
     // State untuk menampilkan pesan Toast
@@ -133,5 +134,32 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
             }
         }
     }
+
+    fun addExperience(experience: Experience) {
+        viewModelScope.launch {
+            try {
+                repository.addExperience(experience)
+                fetchUserExperiences() // Muat ulang daftar setelah berhasil menambah
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun deleteExperience(experienceId: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteExperience(experienceId)
+                fetchUserExperiences() // Muat ulang daftar setelah berhasil menghapus
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun addEducation(education: Education) { /* ... logika seperti addExperience ... */ }
+    fun deleteEducation(educationId: Int) { /* ... logika seperti deleteExperience ... */ }
 }
+
+
 

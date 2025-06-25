@@ -7,7 +7,7 @@ data class Education(
     val id: Int,
 
     @SerializedName("user_id")
-    val userId: Int,
+    val userId: Int? = null,
 
     @SerializedName("university_name")
     val universityName: String,
@@ -36,7 +36,7 @@ data class Education(
     @SerializedName("end_year")
     val endYear: String?,
 
-    @SerializedName("currently_studying")
+    @SerializedName("is_currently_studying")
     val currentlyStudying: Boolean,
 
     @SerializedName("ipk")

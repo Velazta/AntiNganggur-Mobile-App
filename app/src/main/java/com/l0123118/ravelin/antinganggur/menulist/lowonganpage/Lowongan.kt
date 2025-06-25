@@ -205,7 +205,7 @@ fun SearchLowonganSection(
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
-                        .menuAnchor() // <-- Add this line
+                        .menuAnchor()
                         .fillMaxWidth()
                         .padding(bottom = 12.dp),
                     colors = OutlinedTextFieldDefaults.colors(

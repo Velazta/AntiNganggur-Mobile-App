@@ -6,6 +6,8 @@ import com.l0123118.ravelin.antinganggur.data.api.model.Profile
 import com.l0123118.ravelin.antinganggur.data.local.TokenManager
 // Import ApiService YANG BENAR
 import com.l0123118.ravelin.antinganggur.data.api.ApiService
+import com.l0123118.ravelin.antinganggur.data.api.model.Experience
+import com.l0123118.ravelin.antinganggur.data.api.model.Education
 
 class ProfileRepository(
     // UBAH TIPE PARAMETER INI
@@ -41,8 +43,26 @@ class ProfileRepository(
         return apiService.getUserProfile()
     }
 
+    suspend fun getExperiences(): List<Experience> {
+        return apiService.getExperiences()
+    }
+
     suspend fun updateProfile(profileData: Profile): Profile {
         return apiService.updateProfile(profileData)
+    }
+
+    // Tambahkan fungsi ini di dalam ProfileRepository
+    suspend fun addExperience(experience: Experience) {
+        apiService.addExperience(experience)
+    }
+
+    suspend fun deleteExperience(experienceId: Int) {
+        apiService.deleteExperience(experienceId)
+    }
+
+    // --Fungsi untuk pengalaman edukasi
+    suspend fun getEducations(): List<Education> {
+        return apiService.getEducations()
     }
 
     // --- Fungsi untuk Experience ---

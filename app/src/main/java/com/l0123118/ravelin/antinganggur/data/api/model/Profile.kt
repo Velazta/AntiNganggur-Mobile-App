@@ -9,7 +9,7 @@ data class Profile(
     val id: Int,
 
     @SerializedName("user_id")
-    val userId: Int,
+    val userId: Int? = null,
 
     @SerializedName("name")
     val name: String?,
