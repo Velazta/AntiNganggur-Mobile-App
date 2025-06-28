@@ -1,5 +1,6 @@
 package com.l0123118.ravelin.antinganggur.menulist.lowonganpage
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -39,6 +40,11 @@ import com.l0123118.ravelin.antinganggur.ui.theme.Gray
 import com.l0123118.ravelin.antinganggur.ui.theme.LightOrange
 import com.l0123118.ravelin.antinganggur.ui.theme.LightGray
 import java.net.URLDecoder
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.Job
+import androidx.compose.ui.platform.LocalContext
+import com.l0123118.ravelin.antinganggur.MyApplication
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,14 +52,14 @@ fun JobDetailScreen(
     navController: NavController,
     jobId: String? = null
 ) {
-    // Find the job based on the jobId
-    val job = getJobById(jobId)
+    val context = LocalContext.current
+    var job by remember { mutableStateOf<Job?>(null) }
+    var isLoading by remember { mutableStateOf(true) }
 
-    var isFavorite by remember { mutableStateOf(false) }
-
-    // Debug log to verify the jobId is received correctly
     LaunchedEffect(jobId) {
         Log.d("JobDetailScreen", "Received jobId = $jobId")
+        job = getJobById(jobId, context)
+        isLoading = false
     }
 
     Scaffold(
@@ -72,16 +78,29 @@ fun JobDetailScreen(
             )
         }
     ) { paddingValues ->
-        if (job != null) {
-            JobDetailContent(job = job, paddingValues = paddingValues)
-        } else {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("Lowongan tidak ditemukan")
+        when {
+            isLoading -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+            job != null -> {
+                JobDetailContent(job = job!!, paddingValues = paddingValues)
+            }
+            else -> {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text("Lowongan tidak ditemukan")
+                }
             }
         }
     }
@@ -655,42 +674,24 @@ private fun getJobSpecificField(job: Job): String {
     }
 }
 
-// Function to get job by ID
-fun getJobById(jobId: String?): Job? {
+suspend fun getJobById(jobId: String?, context: Context): Job? {
     if (jobId == null) return null
 
-    try {
-        // Decode the URL-encoded jobId
+    return try {
         val decodedJobId = URLDecoder.decode(jobId, "UTF-8")
-        Log.d("JobDetailScreen", "Looking for job with ID: $decodedJobId")
+        val jobRepository = (context.applicationContext as MyApplication).appContainer.jobRepository
 
-        val viewModel = JobViewModel()
-        val allJobs = viewModel.trendingJobs + viewModel.recentJobs
+        val allJobs = jobRepository.getAllJobs().first()
 
-        // First try exact match
-        var foundJob = allJobs.find { it.title == decodedJobId }
-
-        // If not found, try case-insensitive match
-        if (foundJob == null) {
-            foundJob = allJobs.find {
-                it.title.equals(decodedJobId, ignoreCase = true)
-            }
-        }
-
-        // If still not found, try partial match
-        if (foundJob == null) {
-            foundJob = allJobs.find {
+        allJobs.find { it.title == decodedJobId }
+            ?: allJobs.find { it.title.equals(decodedJobId, ignoreCase = true) }
+            ?: allJobs.find {
                 it.title.contains(decodedJobId, ignoreCase = true) ||
                         decodedJobId.contains(it.title, ignoreCase = true)
             }
-        }
-
-        Log.d("JobDetailScreen", "Found job: ${foundJob?.title}")
-        return foundJob
-
     } catch (e: Exception) {
-        Log.e("JobDetailScreen", "Error decoding job ID: ${e.message}")
-        return null
+        Log.e("JobDetailScreen", "Error finding job: ${e.message}")
+        null
     }
 }
 
@@ -704,4 +705,3 @@ fun JobDetailScreenPreview() {
         )
     }
 }
-

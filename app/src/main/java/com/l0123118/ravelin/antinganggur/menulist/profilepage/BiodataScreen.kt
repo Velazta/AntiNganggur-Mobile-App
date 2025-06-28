@@ -45,9 +45,6 @@ import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
 import androidx.compose.ui.window.Dialog
 
-// Ini adalah Application class kustom, Anda perlu membuatnya
-// import com.l0123118.ravelin.antinganggur.MyApplication
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BiodataScreen(
@@ -58,6 +55,10 @@ fun BiodataScreen(
 ) {
     val uiState by viewModel.profileState.collectAsState()
     val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserProfile()
+    }
 
     if (viewModel.showSuccessDialog) {
         CustomSuccessDialog(

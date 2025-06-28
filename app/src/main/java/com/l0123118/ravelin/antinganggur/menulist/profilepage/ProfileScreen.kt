@@ -111,32 +111,28 @@ fun ProfileMenuList(navController: NavController) {
             text = "Biodata Diri",
             backgroundColor = Color.White, // Style aktif sesuai desain
             contentColor = OrangePrimary,
-            onClick = { }
-//            onClick = { navController.navigate(Screen.Biodata.route) }
+            onClick = { navController.navigate(Screen.Biodata.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.BusinessCenter,
             text = "Pengalaman Kerja",
             backgroundColor = Color.White, // Style non-aktif
             contentColor = OrangePrimary,
-            onClick = { }
-//            onClick = { navController.navigate(Screen.Experience.route) }
+            onClick = { navController.navigate(Screen.Experience.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.School,
             text = "Pendidikan",
             backgroundColor = Color.White, // Style non-aktif
             contentColor = OrangePrimary,
-            onClick = { }
-//            onClick = { navController.navigate(Screen.Education.route) }
+            onClick = { navController.navigate(Screen.Education.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.Description,
             text = "CV",
             backgroundColor = Color.White, // Style non-aktif
             contentColor = OrangePrimary,
-            onClick = { }
-//            onClick = { navController.navigate(Screen.UploadCV.route) }
+            onClick = { navController.navigate(Screen.UploadCV.route) }
         )
     }
 }

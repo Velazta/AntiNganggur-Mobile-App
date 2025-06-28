@@ -15,11 +15,17 @@ data class Cv(
     @SerializedName("original_name")
     val originalName: String,
 
-    @SerializedName("file_size")
-    val fileSize: Long?,
+    @SerializedName("file_size_kb")
+    val fileSizeKb: Double,
 
     @SerializedName("mime_type")
     val mimeType: String?,
+
+    @SerializedName("download_url")
+    val downloadUrl: String,
+
+    @SerializedName("uploaded_at")
+    val uploadedAt: String,
 
     @SerializedName("created_at")
     val createdAt: String?,
