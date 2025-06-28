@@ -93,7 +93,6 @@ fun BiodataScreen(
                 BiodataForm(
                     modifier = Modifier.padding(paddingValues),
                     profile = state.profile,
-                    // PERBAIKAN: Berikan lambda yang memanggil fungsi di ViewModel
                     onSaveClick = { updatedProfile ->
                         viewModel.updateProfile(updatedProfile)
                     }
@@ -115,7 +114,6 @@ fun BiodataForm(
     profile: Profile,
     onSaveClick: (Profile) -> Unit
 ) {
-    // State untuk setiap field agar bisa diedit
     var name by remember { mutableStateOf(profile.name ?: "") }
     var phoneNumber by remember { mutableStateOf(profile.phoneNumber ?: "") }
     var country by remember { mutableStateOf(profile.country ?: "") }
@@ -126,7 +124,6 @@ fun BiodataForm(
     var address by remember { mutableStateOf(profile.address ?: "") }
     var bio by remember { mutableStateOf(profile.bio ?: "") }
 
-    // --- State untuk Date Picker ---
     val context = LocalContext.current
     val showDatePicker = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
@@ -138,9 +135,7 @@ fun BiodataForm(
                 TextButton(
                     onClick = {
                         showDatePicker.value = false
-                        // Ambil tanggal yang dipilih (dalam milidetik) dan format
                         datePickerState.selectedDateMillis?.let { millis ->
-                            // Format ke yyyy-MM-dd agar sesuai dengan standar database
                             val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                             dateOfBirth = formatter.format(java.util.Date(millis))
                         }
