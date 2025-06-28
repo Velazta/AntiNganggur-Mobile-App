@@ -37,6 +37,7 @@ import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.ProfileScreen
+import com.l0123118.ravelin.antinganggur.menulist.portofoliopage.PortofolioPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
@@ -83,6 +84,9 @@ fun AppNavHost(
             val jobId = backStackEntry.arguments?.getString("jobId")
             println("Navigation: Navigating to JobDetail with jobId = $jobId")
             JobDetailScreen(navController = navController, jobId = jobId)
+        }
+        composable(Screen.Portofolio.route) {
+            PortofolioPage(navController = navController)
         }
     }
 }

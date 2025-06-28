@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "260272812419",
+    "project_id": "antinganggur-mobile-app-d12e2",
+    "storage_bucket": "antinganggur-mobile-app-d12e2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:260272812419:android:028bb01d61d24f3eea46b6",
+        "android_client_info": {
+          "package_name": "com.l0123118.ravelin.antinganggur"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2DXlvruWymldCMWFlbC_9zeux41UTXKc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

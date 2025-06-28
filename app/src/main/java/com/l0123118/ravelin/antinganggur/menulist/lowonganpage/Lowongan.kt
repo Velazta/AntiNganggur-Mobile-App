@@ -401,10 +401,7 @@ fun JobCard(job: Job, navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(
-                onClick = {
-                    Log.d("JobNavigation", "Navigating to job detail: ${job.title}")
-                    navController.navigate(Screen.JobDetail.createRoute(job.title))
-                },
+                onClick = {},
                 colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
