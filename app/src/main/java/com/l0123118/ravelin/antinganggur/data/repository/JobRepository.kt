@@ -5,6 +5,7 @@ import com.l0123118.ravelin.antinganggur.data.local.database.JobEntity
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.Job
 import com.l0123118.ravelin.antinganggur.R
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
 class JobRepository(private val jobDao: JobDao) {
@@ -60,14 +61,12 @@ class JobRepository(private val jobDao: JobDao) {
     }
 
     suspend fun initializeDefaultJobs() {
-        // Cek apakah database sudah ada data
-        val existingJobs = jobDao.getAllJobs()
-
-        // Jika belum ada data, insert data default
-        val defaultJobs = getDefaultJobs()
-        jobDao.insertJobs(defaultJobs)
+        val existingJobs = jobDao.getAllJobs().first()
+        if (existingJobs.isEmpty()) {
+            val defaultJobs = getDefaultJobs()
+            jobDao.insertJobs(defaultJobs)
+        }
     }
-
     private fun getDefaultJobs(): List<JobEntity> {
         return listOf(
             JobEntity(
@@ -186,7 +185,6 @@ class JobRepository(private val jobDao: JobDao) {
     }
 }
 
-// Extension functions untuk konversi
 fun JobEntity.toJob(): Job {
     return Job(
         title = this.title,
@@ -208,6 +206,6 @@ fun Job.toEntity(): JobEntity {
         salary = this.salary,
         description = this.description,
         iconResId = this.iconResId,
-        isTrending = false // default value, bisa disesuaikan
+        isTrending = false
     )
 }

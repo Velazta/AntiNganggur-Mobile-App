@@ -23,6 +23,9 @@ interface JobDao {
     @Query("SELECT * FROM jobs WHERE location LIKE '%' || :location || '%'")
     fun getJobsByLocation(location: String): Flow<List<JobEntity>>
 
+    @Query("SELECT * FROM jobs LIMIT 1")
+    suspend fun getAllJobsOnce(): List<JobEntity>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertJob(job: JobEntity)
 

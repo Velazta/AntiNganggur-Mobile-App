@@ -6,9 +6,13 @@ import com.l0123118.ravelin.antinganggur.data.repository.JobRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
+
+    private val _allJobs = MutableStateFlow<List<Job>>(emptyList())
+    val allJobs: StateFlow<List<Job>> = _allJobs.asStateFlow()
 
     private val _trendingJobs = MutableStateFlow<List<Job>>(emptyList())
     val trendingJobs: StateFlow<List<Job>> = _trendingJobs.asStateFlow()
@@ -35,18 +39,9 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
 
     private fun loadJobs() {
         viewModelScope.launch {
-            _isLoading.value = true
-
-            // Load trending jobs
-            jobRepository.getTrendingJobs().collect { jobs ->
-                _trendingJobs.value = jobs
-            }
-        }
-
-        viewModelScope.launch {
-            // Load recent jobs
             jobRepository.getRecentJobs().collect { jobs ->
                 _recentJobs.value = jobs
+                _allJobs.value = jobs
                 _isLoading.value = false
             }
         }
@@ -54,27 +49,16 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
 
     fun searchJobs(query: String, location: String = "") {
         viewModelScope.launch {
-            if (query.isBlank() && location.isBlank()) {
-                _searchResults.value = emptyList()
-                return@launch
+            val jobs = jobRepository.getAllJobs().first()
+            val filtered = jobs.filter { job ->
+                val matchesKeyword = query.isBlank() || job.title.contains(query, ignoreCase = true) || job.company.contains(query, ignoreCase = true)
+                val matchesLocation = location.isBlank() || location == "Semua Lokasi" || job.location.contains(location, ignoreCase = true)
+                matchesKeyword && matchesLocation
+            }.distinctBy { job ->
+                "${job.title}-${job.company}-${job.location}"
             }
 
-            val results = if (location.isNotBlank() && location != "Semua Lokasi") {
-                jobRepository.getJobsByLocation(location)
-            } else {
-                jobRepository.searchJobs(query)
-            }
-
-            results.collect { jobs ->
-                _searchResults.value = jobs.filter { job ->
-                    if (query.isNotBlank()) {
-                        job.title.contains(query, ignoreCase = true) ||
-                                job.company.contains(query, ignoreCase = true)
-                    } else {
-                        true
-                    }
-                }
-            }
+            _searchResults.value = filtered
         }
     }
 
@@ -85,18 +69,21 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
     fun addJob(job: Job) {
         viewModelScope.launch {
             jobRepository.insertJob(job)
+            loadJobs()
         }
     }
 
     fun updateJob(job: Job) {
         viewModelScope.launch {
             jobRepository.updateJob(job)
+            loadJobs()
         }
     }
 
     fun deleteJob(job: Job) {
         viewModelScope.launch {
             jobRepository.deleteJob(job)
+            loadJobs()
         }
     }
 }

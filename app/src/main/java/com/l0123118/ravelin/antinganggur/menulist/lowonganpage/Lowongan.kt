@@ -231,6 +231,159 @@ fun LowonganScreen(
     }
 }
 
+
+// JobCard buat ringkasan lowongan trending
+//@Composable
+//fun JobCard(job: Job, navController: NavController) {
+//    Card(
+//        modifier = Modifier.width(280.dp),
+//        colors = CardDefaults.cardColors(containerColor = Color.White),
+//        shape = RoundedCornerShape(16.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+//    ) {
+//        Column(modifier = Modifier.padding(16.dp)) {
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                job.iconResId?.let {
+//                    Icon(
+//                        painter = painterResource(id = it),
+//                        contentDescription = "${job.title} Icon",
+//                        tint = PrimaryOrange,
+//                        modifier = Modifier
+//                            .size(48.dp)
+//                            .background(LightOrange, RoundedCornerShape(8.dp))
+//                            .padding(8.dp)
+//                    )
+//                }
+//                Spacer(modifier = Modifier.width(12.dp))
+//                Column {
+//                    Text(job.title, fontSize = 16.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+//                    Text(job.company, fontSize = 14.sp, color = Gray)
+//                    Text(job.location, fontSize = 12.sp, color = Gray)
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(16.dp))
+//
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                Column {
+//                    Text("Kisaran Gaji", fontSize = 12.sp, color = Gray)
+//                    Text(job.salary, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+//                }
+//                Column {
+//                    Text("Waktu Kerja", fontSize = 12.sp, color = Gray)
+//                    Text(job.type, fontSize = 14.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(12.dp))
+//
+//            Button(
+//                onClick = {},
+//                colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
+//                shape = RoundedCornerShape(8.dp),
+//                modifier = Modifier.fillMaxWidth()
+//            ) {
+//                Text("Lamar", color = Color.White)
+//            }
+//        }
+//    }
+//}
+//
+////tampilan detail buat lowongan terbaru
+//@Composable
+//fun JobDetailCard(job: Job, navController: NavController, modifier: Modifier = Modifier) {
+//    Card(
+//        modifier = modifier.fillMaxWidth(),
+//        colors = CardDefaults.cardColors(containerColor = Color.White),
+//        shape = RoundedCornerShape(12.dp),
+//        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+//    ) {
+//        Column(modifier = Modifier.padding(16.dp)) {
+//            job.iconResId?.let {
+//                Icon(
+//                    painter = painterResource(id = it),
+//                    contentDescription = "${job.title} Icon",
+//                    tint = PrimaryOrange,
+//                    modifier = Modifier
+//                        .size(48.dp)
+//                        .background(LightOrange, RoundedCornerShape(8.dp))
+//                        .padding(8.dp)
+//                )
+//            }
+//
+//            Text(job.title, fontWeight = FontWeight.Bold, fontSize = 18.sp, color = Color.Black)
+//            Text(job.company, fontSize = 14.sp, color = Gray)
+//            Spacer(modifier = Modifier.height(8.dp))
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.location),
+//                    contentDescription = "Location",
+//                    modifier = Modifier.size(16.dp),
+//                    tint = PrimaryOrange
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                Text(job.location, fontSize = 12.sp, color = Gray)
+//                Spacer(modifier = Modifier.width(12.dp))
+//                Icon(
+//                    painter = painterResource(id = R.drawable.job),
+//                    contentDescription = "Job Type",
+//                    modifier = Modifier.size(16.dp),
+//                    tint = PrimaryOrange
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                Text(job.type, fontSize = 12.sp, color = Gray)
+//            }
+//            Spacer(modifier = Modifier.height(4.dp))
+//            Row(verticalAlignment = Alignment.CenterVertically) {
+//                Icon(
+//                    painter = painterResource(id = R.drawable.money),
+//                    contentDescription = "Salary Range",
+//                    modifier = Modifier.size(16.dp),
+//                    tint = PrimaryOrange
+//                )
+//                Spacer(modifier = Modifier.width(4.dp))
+//                Text(job.salary, fontSize = 12.sp, fontWeight = FontWeight.Medium, color = Color.Black)
+//            }
+//            Spacer(modifier = Modifier.height(12.dp))
+//            Text(job.description, maxLines = 3, overflow = TextOverflow.Ellipsis, fontSize = 14.sp, color = Color.DarkGray)
+//            Spacer(modifier = Modifier.height(12.dp))
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(top = 8.dp),
+//                horizontalArrangement = Arrangement.End
+//            ) {
+//                Button(
+//                    onClick = {
+//                        Log.d("JobNavigation", "Navigating to job detail: ${job.title}")
+//                        navController.navigate(Screen.JobDetail.createRoute(job.title))
+//                    },
+//                    colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
+//                    shape = RoundedCornerShape(8.dp),
+//                    modifier = Modifier.width(110.dp)
+//                ) {
+//                    Text("Lamar", color = Color.White, fontWeight = FontWeight.Bold)
+//                }
+//                Spacer(modifier = Modifier.width(8.dp))
+//                OutlinedButton(
+//                    onClick = {
+//                        Log.d("JobNavigation", "Navigating to job detail: ${job.title}")
+//                        navController.navigate(Screen.JobDetail.createRoute(job.title))
+//                    },
+//                    shape = RoundedCornerShape(8.dp),
+//                    colors = ButtonDefaults.outlinedButtonColors(contentColor = PrimaryOrange),
+//                    border = BorderStroke(1.dp, PrimaryOrange),
+//                ) {
+//                    Text("Lihat Detail", fontWeight = FontWeight.Bold)
+//                }
+//            }
+//        }
+//    }
+//}
+
 @Preview(showBackground = true, widthDp = 360)
 @Composable
 fun PreviewLowonganScreenCombined() {
