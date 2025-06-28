@@ -1,10 +1,13 @@
 package com.l0123118.ravelin.antinganggur.ui.profile
 
+import android.content.Context
+import android.os.Environment
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.l0123118.ravelin.antinganggur.data.api.model.Cv
 import com.l0123118.ravelin.antinganggur.data.api.model.Education
 import com.l0123118.ravelin.antinganggur.data.api.model.Experience
 import com.l0123118.ravelin.antinganggur.data.api.model.Profile
@@ -13,6 +16,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 
 // State untuk setiap bagian data
 sealed interface ProfileUiState {
@@ -33,6 +42,12 @@ sealed interface EducationUiState {
     data class Error(val message: String) : EducationUiState
 }
 
+sealed interface CvUiState {
+    object Loading : CvUiState
+    data class Success(val cvs: List<Cv>) : CvUiState
+    data class Error(val message: String) : CvUiState
+}
+
 class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() {
 
     // StateFlow untuk setiap jenis data
@@ -45,9 +60,15 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
     private val _educationState = MutableStateFlow<EducationUiState>(EducationUiState.Loading)
     val educationState: StateFlow<EducationUiState> = _educationState.asStateFlow()
 
+    private val _cvState = MutableStateFlow<CvUiState>(CvUiState.Loading)
+    val cvState: StateFlow<CvUiState> = _cvState.asStateFlow()
+
     // State untuk mengontrol proses update (misal: untuk loading di tombol simpan)
     private val _isUpdating = MutableStateFlow(false)
     val isUpdating: StateFlow<Boolean> = _isUpdating.asStateFlow()
+
+    private val _isUploading = MutableStateFlow(false)
+    val isUploading: StateFlow<Boolean> = _isUploading.asStateFlow()
 
 
 
@@ -58,9 +79,14 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
                 repository.checkAndRegisterGuestIfNeeded()
                 fetchUserProfile()
                 fetchUserExperiences()
-//                fetchUserEducations()
+                fetchUserEducations()
+                fetchUserCvs()
             } catch (e: Exception) {
-                _profileState.value = ProfileUiState.Error("Gagal melakukan autentikasi awal.")
+                val errorMessage = "Gagal melakukan autentikasi awal."
+                _profileState.value = ProfileUiState.Error(errorMessage)
+                _experienceState.value = ExperienceUiState.Error(errorMessage)
+                _educationState.value = EducationUiState.Error(errorMessage)
+                _cvState.value = CvUiState.Error(errorMessage)
             }
         }
     }
@@ -98,6 +124,18 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
                 _educationState.value = EducationUiState.Success(educations)
             } catch (e: Exception) {
                 _educationState.value = EducationUiState.Error("Gagal memuat riwayat pendidikan.")
+            }
+        }
+    }
+
+    fun fetchUserCvs() {
+        _cvState.value = CvUiState.Loading
+        viewModelScope.launch {
+            try {
+                val cvs = repository.getCvs()
+                _cvState.value = CvUiState.Success(cvs)
+            } catch (e: Exception) {
+                _cvState.value = CvUiState.Error("Gagal memuat daftar CV.")
             }
         }
     }
@@ -146,6 +184,19 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
         }
     }
 
+    fun updateExperience(experience: Experience) {
+        viewModelScope.launch {
+            try {
+                repository.updateExperience(experience)
+                // Muat ulang daftar untuk menampilkan data yang sudah diperbarui
+                fetchUserExperiences()
+                // Anda bisa tambahkan logika dialog/toast sukses di sini jika mau
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
     fun deleteExperience(experienceId: Int) {
         viewModelScope.launch {
             try {
@@ -157,8 +208,114 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
         }
     }
 
-    fun addEducation(education: Education) { /* ... logika seperti addExperience ... */ }
-    fun deleteEducation(educationId: Int) { /* ... logika seperti deleteExperience ... */ }
+    fun addEducation(education: Education) {
+        viewModelScope.launch {
+            try {
+                repository.addEducation(education)
+                fetchUserEducations() // Muat ulang daftar setelah berhasil menambah
+            } catch (e: Exception) {
+                // Handle error, misalnya dengan Toast atau Dialog
+            }
+        }
+    }
+
+    fun updateEducation(education: Education) {
+        viewModelScope.launch {
+            try {
+                repository.updateEducation(education)
+                // Muat ulang daftar untuk menampilkan data yang sudah diperbarui
+                fetchUserEducations()
+                // Anda bisa tambahkan logika dialog/toast sukses di sini
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun deleteEducation(educationId: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteEducation(educationId)
+                fetchUserEducations() // Muat ulang daftar setelah berhasil menghapus
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun uploadCv(cvFilePart: MultipartBody.Part) {
+        viewModelScope.launch {
+            _isUploading.value = true
+            try {
+                repository.uploadCv(cvFilePart)
+                fetchUserCvs() // Muat ulang daftar CV setelah berhasil upload
+
+                // Beri feedback sukses
+                dialogMessage = "CV berhasil diunggah!"
+                isUpdateSuccess = true
+                showSuccessDialog = true
+
+            } catch (e: Exception) {
+                // Beri feedback error
+                dialogMessage = "Gagal mengunggah CV: ${e.message}"
+                isUpdateSuccess = false
+                showSuccessDialog = true
+            } finally {
+                _isUploading.value = false
+            }
+        }
+    }
+
+    fun deleteCv(cvId: Int) {
+        viewModelScope.launch {
+            try {
+                repository.deleteCv(cvId)
+                fetchUserCvs() // Muat ulang daftar CV
+            } catch (e: Exception) {
+                // Handle error
+            }
+        }
+    }
+
+    fun downloadCvFile(
+        context: Context,
+        cv: Cv,
+        onSuccess: (String) -> Unit,
+        onError: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            try {
+                val responseBody = repository.downloadCv(cv.id)
+
+                // Simpan file ke folder Downloads
+                val downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                val file = File(downloadsDir, cv.originalName)
+
+                var inputStream: InputStream? = null
+                var outputStream: OutputStream? = null
+
+                try {
+                    inputStream = responseBody.byteStream()
+                    outputStream = FileOutputStream(file)
+                    val buffer = ByteArray(4096)
+                    var read: Int
+                    while (inputStream.read(buffer).also { read = it } != -1) {
+                        outputStream.write(buffer, 0, read)
+                    }
+                    outputStream.flush()
+                    onSuccess("CV '${cv.originalName}' berhasil diunduh ke folder Downloads.")
+                } catch (e: IOException) {
+                    onError("Gagal menyimpan file: ${e.message}")
+                } finally {
+                    inputStream?.close()
+                    outputStream?.close()
+                }
+
+            } catch (e: Exception) {
+                onError("Gagal memulai download: ${e.message}")
+            }
+        }
+    }
 }
 
 

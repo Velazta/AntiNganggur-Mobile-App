@@ -36,6 +36,10 @@ import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.BiodataScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.CvScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.EducationScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.ExperienceScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.ProfileScreen
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
@@ -74,6 +78,18 @@ fun AppNavHost(
         }
         composable(Screen.Profile.route) {
             ProfileScreen(navController = navController)
+        }
+        composable(Screen.Biodata.route) {
+            BiodataScreen(navController = navController)
+        }
+        composable(Screen.Experience.route) {
+            ExperienceScreen(navController = navController)
+        }
+        composable(Screen.Education.route) {
+            EducationScreen(navController = navController)
+        }
+        composable(Screen.UploadCV.route) {
+            CvScreen(navController = navController)
         }
         
         composable(

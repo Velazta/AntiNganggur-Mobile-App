@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,7 +44,6 @@ fun ExperienceScreen(
 ) {
     val uiState by viewModel.experienceState.collectAsState()
 
-    // Panggil fetch data saat pertama kali layar dibuka
     LaunchedEffect(Unit) {
         viewModel.fetchUserExperiences()
     }
@@ -77,6 +75,7 @@ fun ExperienceScreen(
                     onAddExperience = { newExperience ->
                         viewModel.addExperience(newExperience)
                     },
+                    onUpdateExperience = { updatedExperience -> viewModel.updateExperience(updatedExperience) },
                     onDeleteExperience = { experienceId ->
                         viewModel.deleteExperience(experienceId)
                     }
@@ -98,8 +97,10 @@ fun ExperienceContent(
     modifier: Modifier = Modifier,
     experiences: List<Experience>,
     onAddExperience: (Experience) -> Unit,
+    onUpdateExperience: (Experience) -> Unit,
     onDeleteExperience: (Int) -> Unit
 ) {
+    var experienceToEdit by remember { mutableStateOf<Experience?>(null) }
     var showAddForm by remember { mutableStateOf(false) }
 
     LazyColumn(
@@ -112,7 +113,7 @@ fun ExperienceContent(
             items(experiences) { experience ->
                 ExperienceItem(
                     experience = experience,
-                    onEditClick = { /* TODO: Navigasi ke halaman edit */ },
+                    onEditClick = { experienceToEdit = experience },
                     onDeleteClick = { onDeleteExperience(experience.id) }
                 )
             }
@@ -127,7 +128,7 @@ fun ExperienceContent(
         }
 
         item {
-            AnimatedVisibility(!showAddForm) {
+            AnimatedVisibility(visible = !showAddForm && experienceToEdit == null){
                 OutlinedButton(
                     onClick = { showAddForm = true },
                     modifier = Modifier.fillMaxWidth()
@@ -141,13 +142,27 @@ fun ExperienceContent(
 
         item {
             AnimatedVisibility(showAddForm) {
-                AddExperienceForm(
+                ExperienceForm(
                     onSaveClick = { newExperience ->
                         onAddExperience(newExperience)
                         showAddForm = false
                     },
                     onCancelClick = { showAddForm = false }
                 )
+            }
+        }
+        item {
+            experienceToEdit?.let { experience ->
+                AnimatedVisibility(visible = true) {
+                    ExperienceForm(
+                        initialData = experience,
+                        onSaveClick = { updatedExperience ->
+                            onUpdateExperience(updatedExperience)
+                            experienceToEdit = null
+                        },
+                        onCancelClick = { experienceToEdit = null }
+                    )
+                }
             }
         }
     }
@@ -211,26 +226,27 @@ fun ExperienceItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddExperienceForm(
+fun ExperienceForm(
+    initialData: Experience? = null,
     onSaveClick: (Experience) -> Unit,
     onCancelClick: () -> Unit
 ) {
     val years = (Calendar.getInstance().get(Calendar.YEAR) downTo 1970).map { it.toString() }
     val months = listOf("Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember")
-    val monthMap = months.mapIndexed { index, name -> name to (index + 1) }.toMap()
-    val monthNameMap = (1..12).associateWith { months[it - 1] }
+    val monthStringToNumberMap = months.withIndex().associate { (index, name) -> name to (index + 1) }
+    val monthNumberToStringMap = (1..12).associateWith { months[it - 1] }
 
     // State untuk setiap field form
-    var jobTitle by remember { mutableStateOf("") }
-    var companyName by remember { mutableStateOf("") }
-    var country by remember { mutableStateOf("Indonesia") }
-    var city by remember { mutableStateOf("") }
-    var startMonth by remember { mutableStateOf(months[0]) }
-    var startYear by remember { mutableStateOf(years[0]) }
-    var endMonth by remember { mutableStateOf(months[0]) }
-    var endYear by remember { mutableStateOf(years[0]) }
-    var isCurrentJob by remember { mutableStateOf(false) }
-    var description by remember { mutableStateOf("") }
+    var jobTitle by remember { mutableStateOf(initialData?.jobTitle ?: "") }
+    var companyName by remember { mutableStateOf(initialData?.companyName ?: "") }
+    var country by remember { mutableStateOf(initialData?.country ?: "") }
+    var city by remember { mutableStateOf(initialData?.city ?: "") }
+    var startMonth by remember { mutableStateOf(monthNumberToStringMap[initialData?.startMonth] ?: months[0]) }
+    var startYear by remember { mutableStateOf(initialData?.startYear?.toString() ?: years[0]) }
+    var endMonth by remember { mutableStateOf(monthNumberToStringMap[initialData?.endMonth] ?: months[0]) }
+    var endYear by remember { mutableStateOf(initialData?.endYear?.toString() ?: years[0]) }
+    var isCurrentJob by remember { mutableStateOf(initialData?.isCurrentJob ?: false) }
+    var description by remember { mutableStateOf(initialData?.description ?: "") }
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -283,9 +299,9 @@ fun AddExperienceForm(
                     companyName = companyName,
                     country = country.ifEmpty { null },
                     city = city.ifEmpty { null },
-                    startMonth = monthMap[startMonth],
+                    startMonth = monthStringToNumberMap[startMonth],
                     startYear = startYear.toIntOrNull(),
-                    endMonth = if (isCurrentJob) null else monthMap[endMonth],
+                    endMonth = if (isCurrentJob) null else monthStringToNumberMap[endMonth],
                     endYear = if (isCurrentJob) null else endYear.toIntOrNull(),
                     isCurrentJob = isCurrentJob,
                     description = description.ifEmpty { null },
