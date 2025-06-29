@@ -1,26 +1,39 @@
 # AntiNganggur - Aplikasi Pencari Kerja IT
 
-Selamat datang di repositori AntiNganggur! Ini adalah aplikasi mobile yang dirancang untuk menjadi jembatan antara para pencari kerja di bidang teknologi dengan perusahaan-perusahaan yang membutuhkan talenta IT di Indonesia.
+Selamat datang di repositori AntiNganggur!
+Aplikasi mobile ini dirancang untuk menjadi jembatan antara talenta digital dan perusahaan teknologi di Indonesia. Dengan fitur-fitur cerdas, AntiNganggur membantu Anda menemukan pekerjaan impian di dunia IT secara lebih mudah, cepat, dan efisien.
 
 ## 🚀 Apa itu Aplikasi AntiNganggur?
 
-AntiNganggur adalah sebuah platform digital yang berfokus untuk mengatasi masalah pengangguran di sektor IT. Aplikasi ini memfasilitasi para pencari kerja untuk dapat membuat profil profesional, mencari lowongan pekerjaan yang sesuai dengan keahlian, dan melamar pekerjaan impian mereka langsung dari genggaman.
+AntiNganggur adalah platform digital yang bertujuan mengatasi permasalahan pengangguran di sektor teknologi. Dengan aplikasi ini, para pencari kerja dapat:
+
+✅ Membangun profil profesional
+✅ Menjelajahi lowongan kerja terkini
+✅ Melamar langsung lewat aplikasi
+✅ Memperluas kesempatan di dunia kerja digital
 
 ## ✨ Fitur-fitur Utama
 
-Aplikasi AntiNganggur dilengkapi dengan berbagai fitur untuk memaksimalkan produktivitas Anda dalam mencari kerja:
+🔍 Pencarian Lowongan Cerdas
+Cari pekerjaan berdasarkan posisi, lokasi, atau kata kunci favorit Anda.
 
-* **Pencarian Lowongan Cerdas:** Cari pekerjaan berdasarkan posisi dan lokasi yang Anda inginkan.
-* **Daftar Lowongan Terkini & Trending:** Selalu dapatkan informasi terbaru mengenai pekerjaan yang sedang populer dan baru saja dibuka.
-* **Profil Profesional:** Bangun profil Anda dengan menambahkan biodata, riwayat pendidikan, pengalaman kerja, hingga mengunggah CV.
-* **Lamar Kerja Instan:** Lamar pekerjaan yang Anda minati dengan mudah langsung melalui aplikasi.
-* **Detail Lowongan Lengkap:** Dapatkan informasi mendalam tentang pekerjaan, mulai dari deskripsi, persyaratan, hingga benefit yang ditawarkan.
+🔥 Lowongan Terbaru & Trending
+Pantau info pekerjaan paling baru dan yang sedang banyak diminati.
+
+🧑‍💼 Profil Profesional Digital
+Lengkapi data diri, pengalaman kerja, pendidikan, dan unggah CV Anda.
+
+📩 Lamar Instan
+Satu klik untuk mengirim lamaran ke pekerjaan yang Anda incar.
+
+📃 Detail Pekerjaan Lengkap
+Telusuri deskripsi, kualifikasi, dan benefit setiap lowongan.
 
 ## 🔧 Cara Instalasi
 
 Anda bisa menjalankan aplikasi ini melalui dua cara: menginstal file `.apk` yang sudah jadi atau menjalankan proyek dari *source code*-nya.
 
-### Metode 1: Instalasi via APK
+### Metode 1: Instalasi via APK (Rekomendasi Cepat)
 
 Metode ini adalah cara termudah untuk mencoba aplikasi di perangkat Android Anda.
 
@@ -37,7 +50,7 @@ Metode ini adalah cara termudah untuk mencoba aplikasi di perangkat Android Anda
     * Ketuk kembali file `.apk` dan pilih **Install**.
     * Setelah selesai, aplikasi AntiNganggur akan muncul di daftar aplikasi Anda.
 
-### Metode 2: Menjalankan dari Source Code
+### Metode 2: Jalankan dari Source Code (Untuk Developer)
 
 Metode ini ditujukan bagi Anda yang ingin mengoprek, memodifikasi, atau berkontribusi pada proyek ini.
 
@@ -70,8 +83,10 @@ Metode ini ditujukan bagi Anda yang ingin mengoprek, memodifikasi, atau berkontr
 
 Aplikasi ini dikembangkan dan dikelola oleh:
 
-* **Ravelin Luthhan** - Manager
-* **Rizky Amalia** - Chief Architect
-* **Rafi Amirudin** - HR Head
+* **Ravelin Luthhan** - (L0123118)
+* **Rizky Amalia** - (L0123123)
+* **Rafi Amirudin** - (L0123113)
 
-Terima kasih telah mengunjungi repositori kami! Jangan ragu untuk berkontribusi atau membe
+Terima kasih sudah mengunjungi!
+Mari bersama bantu kurangi pengangguran di bidang IT lewat teknologi.
+⭐ Jangan lupa beri bintang pada repositori ini jika Anda suka!
