@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.l0123118.ravelin.antinganggur" />
+                  <option name="mobileSdkAppId" value="1:260272812419:android:028bb01d61d24f3eea46b6" />
+                  <option name="projectId" value="antinganggur-mobile-app-d12e2" />
+                  <option name="projectNumber" value="260272812419" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
