@@ -43,6 +43,7 @@ import java.net.URLDecoder
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.Job
 import androidx.compose.ui.platform.LocalContext
 import com.l0123118.ravelin.antinganggur.MyApplication
+import com.l0123118.ravelin.antinganggur.navigation.Screen
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 
@@ -90,7 +91,7 @@ fun JobDetailScreen(
                 }
             }
             job != null -> {
-                JobDetailContent(job = job!!, paddingValues = paddingValues)
+                JobDetailContent(job = job!!, paddingValues = paddingValues, navController = navController)
             }
             else -> {
                 Box(
@@ -107,7 +108,7 @@ fun JobDetailScreen(
 }
 
 @Composable
-fun JobDetailContent(job: Job, paddingValues: PaddingValues) {
+fun JobDetailContent(job: Job, paddingValues: PaddingValues, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -328,7 +329,7 @@ fun JobDetailContent(job: Job, paddingValues: PaddingValues) {
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 Button(
-                    onClick = { /* TODO: Handle apply action */ },
+                    onClick = { navController.navigate(Screen.Lamar.createRoute(job.title)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(52.dp),

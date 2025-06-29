@@ -33,6 +33,12 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
     object Experience : Screen("profile/experience", "Pengalaman Kerja", Icons.Default.Work)
     object Education : Screen("profile/education", "Pendidikan", Icons.Default.Work) // Ganti ikon jika perlu
     object UploadCV : Screen("profile/cv", "Upload CV", Icons.Default.Work) // Ganti ikon jika perlu
+    object Lamar : Screen("lamar/{jobTitle}", "Lamar", Icons.Filled.Work) {
+        fun createRoute(jobTitle: String): String {
+            val encoded = java.net.URLEncoder.encode(jobTitle, "UTF-8")
+            return "lamar/$encoded"
+        }
+    }
 }
 
 // Daftar item untuk drawer menu

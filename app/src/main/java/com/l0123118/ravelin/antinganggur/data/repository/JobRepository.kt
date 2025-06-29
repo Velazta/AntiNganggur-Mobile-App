@@ -193,7 +193,8 @@ fun JobEntity.toJob(): Job {
         type = this.type,
         salary = this.salary,
         description = this.description,
-        iconResId = this.iconResId
+        iconResId = this.iconResId,
+        isTrending = this.isTrending
     )
 }
 
@@ -206,6 +207,6 @@ fun Job.toEntity(): JobEntity {
         salary = this.salary,
         description = this.description,
         iconResId = this.iconResId,
-        isTrending = false
+        isTrending = this.isTrending
     )
 }

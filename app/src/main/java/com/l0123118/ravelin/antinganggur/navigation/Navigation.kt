@@ -32,10 +32,10 @@ import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
 import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
-import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
+import com.l0123118.ravelin.antinganggur.menulist.lamarpage.Lamar
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.BiodataScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.CvScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.EducationScreen
@@ -47,7 +47,7 @@ import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreenUpdated
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 
 @Composable
 fun AppNavHost(
@@ -73,7 +73,7 @@ fun AppNavHost(
             ContactPage(navController = navController)
         }
         composable(Screen.LowonganScreen.route) {
-            LowonganScreenUpdated(navController = navController)
+            LowonganScreen(navController = navController)
         }
         composable(Screen.AboutUs.route) {
             AboutUsPage()
@@ -104,6 +104,13 @@ fun AppNavHost(
         }
         composable(Screen.Portofolio.route) {
             PortofolioPage(navController = navController)
+        }
+        composable(
+            route = Screen.Lamar.route,
+            arguments = listOf(navArgument("jobTitle") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobTitle = backStackEntry.arguments?.getString("jobTitle")
+            Lamar(navController = navController, jobTitle = jobTitle)
         }
     }
 }

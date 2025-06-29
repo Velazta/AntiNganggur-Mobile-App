@@ -120,7 +120,7 @@ fun WelcomeSection(navController: NavController) {
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            horizontalArrangement = Arrangement.Center
         ) {
             Button(
                 onClick = {navController.navigate(Screen.LowonganScreen.route) {
@@ -139,22 +139,6 @@ fun WelcomeSection(navController: NavController) {
                 Text(
                     text = "Lihat Lowongan",
                     color = PrimaryOrange,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-            Button(
-                onClick = { /* TO DO */ },
-                colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
-                shape = RoundedCornerShape(8.dp),
-                contentPadding = PaddingValues(horizontal = 24.dp, vertical = 12.dp),
-                modifier = Modifier.border(
-                    BorderStroke(2.dp, PrimaryOrange),
-                    shape = RoundedCornerShape(8.dp)
-                )
-            ) {
-                Text(
-                    text = "Lamar",
-                    color = Color.White,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -384,7 +368,7 @@ fun JobCard(
             ) {
                 Button(
                     onClick = {
-                        navController.navigate(Screen.JobDetail.createRoute(title))
+                        navController.navigate(Screen.Lamar.createRoute(title))
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
                     shape = RoundedCornerShape(8.dp),

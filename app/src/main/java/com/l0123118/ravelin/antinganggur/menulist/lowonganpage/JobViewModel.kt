@@ -1,5 +1,6 @@
 package com.l0123118.ravelin.antinganggur.menulist.lowonganpage
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.l0123118.ravelin.antinganggur.data.repository.JobRepository
@@ -29,6 +30,7 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
     init {
         initializeData()
         loadJobs()
+        loadTrendingJobs()
     }
 
     private fun initializeData() {
@@ -39,10 +41,26 @@ class JobViewModel(private val jobRepository: JobRepository) : ViewModel() {
 
     private fun loadJobs() {
         viewModelScope.launch {
-            jobRepository.getRecentJobs().collect { jobs ->
-                _recentJobs.value = jobs
-                _allJobs.value = jobs
-                _isLoading.value = false
+            launch {
+                jobRepository.getRecentJobs().collect { jobs ->
+                    _recentJobs.value = jobs
+                    _allJobs.value = jobs
+                    _isLoading.value = false
+                }
+            }
+            launch {
+                jobRepository.getTrendingJobs().collect { trending ->
+                    _trendingJobs.value = trending
+                    Log.d("JobViewModel", "Trending Jobs Loaded: ${trending.size}")
+                }
+            }
+        }
+    }
+
+    private fun loadTrendingJobs() {
+        viewModelScope.launch {
+            jobRepository.getTrendingJobs().collect { jobs ->
+                _trendingJobs.value = jobs
             }
         }
     }
