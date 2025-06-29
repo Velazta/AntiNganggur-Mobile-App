@@ -2,6 +2,7 @@ package com.l0123118.ravelin.antinganggur.data.repository
 
 import android.util.Log
 import com.l0123118.ravelin.antinganggur.data.api.ApiService
+import com.l0123118.ravelin.antinganggur.data.api.ApiService.PhotoUploadResponse
 import com.l0123118.ravelin.antinganggur.data.api.model.Cv
 import com.l0123118.ravelin.antinganggur.data.api.model.Education
 import com.l0123118.ravelin.antinganggur.data.api.model.Experience
@@ -67,6 +68,10 @@ class ProfileRepository(
 
     suspend fun updateProfile(profileData: Profile): Profile {
         return apiService.updateProfile(profileData)
+    }
+
+    suspend fun updateProfilePhoto(photoPart: MultipartBody.Part): PhotoUploadResponse {
+        return apiService.updateProfilePhoto(photoPart)
     }
 
     // --- Fungsi untuk Experience ---

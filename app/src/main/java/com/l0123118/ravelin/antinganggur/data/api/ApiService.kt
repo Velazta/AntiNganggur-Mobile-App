@@ -1,5 +1,6 @@
 package com.l0123118.ravelin.antinganggur.data.api
 
+import com.google.gson.annotations.SerializedName
 import com.l0123118.ravelin.antinganggur.data.api.model.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
@@ -26,6 +27,16 @@ interface ApiService {
 
     @POST("user/profile")
     suspend fun updateProfile(@Body profileData: Profile): Profile
+
+    data class PhotoUploadResponse(
+        @SerializedName("message") val message: String,
+        @SerializedName("profile_photo_url") val profilePhotoUrl: String
+    )
+
+    @Multipart
+    @POST("user/profile/photo")
+    suspend fun updateProfilePhoto(@Part photo: MultipartBody.Part): PhotoUploadResponse
+
 
     @GET("user/experiences")
     suspend fun getExperiences(): List<Experience>

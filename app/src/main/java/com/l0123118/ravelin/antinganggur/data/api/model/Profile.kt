@@ -41,8 +41,11 @@ data class Profile(
     @SerializedName("bio")
     val bio: String?,
 
-    @SerializedName("profile_photo_path")
-    val profilePhotoPath: String?,
+    @SerializedName("profile_id")
+    val profileId: Int?,
+
+    @SerializedName("profile_photo_url")
+    val profilePhotoUrl: String?,
 
 //    timestamps
     @SerializedName("created_at")
