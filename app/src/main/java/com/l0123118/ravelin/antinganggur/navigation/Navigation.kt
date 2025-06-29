@@ -21,25 +21,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.l0123118.ravelin.antinganggur.menulist.mainpage.Home
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
-import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
+import com.l0123118.ravelin.antinganggur.menulist.lamarpage.Lamar
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.BiodataScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.CvScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.EducationScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.ExperienceScreen
+import com.l0123118.ravelin.antinganggur.menulist.profilepage.ProfileScreen
+import com.l0123118.ravelin.antinganggur.menulist.portofoliopage.PortofolioPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-
-
-
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 
 @Composable
 fun AppNavHost(
@@ -53,29 +60,57 @@ fun AppNavHost(
         modifier = modifier.padding(innerPadding)
     ) {
         composable(Screen.Home.route) {
-
             Home(navController = navController)
         }
         composable(Screen.Login.route) {
-
             LoginPage(navController = navController)
         }
         composable(Screen.SignIn.route) {
-
             SignInPage2(navController = navController)
         }
-
         composable(Screen.ContactPage.route) {
             ContactPage(navController = navController)
         }
-
         composable(Screen.LowonganScreen.route) {
-            LowonganScreen()
+            LowonganScreen(navController = navController)
         }
         composable(Screen.AboutUs.route) {
             AboutUsPage()
         }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController)
+        }
+        composable(Screen.Biodata.route) {
+            BiodataScreen(navController = navController)
+        }
+        composable(Screen.Experience.route) {
+            ExperienceScreen(navController = navController)
+        }
+        composable(Screen.Education.route) {
+            EducationScreen(navController = navController)
+        }
+        composable(Screen.UploadCV.route) {
+            CvScreen(navController = navController)
+        }
 
+        composable(
+            route = Screen.JobDetail.route,
+            arguments = listOf(navArgument("jobId") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobId = backStackEntry.arguments?.getString("jobId")
+            println("Navigation: Navigating to JobDetail with jobId = $jobId")
+            JobDetailScreen(navController = navController, jobId = jobId)
+        }
+        composable(Screen.Portofolio.route) {
+            PortofolioPage(navController = navController)
+        }
+        composable(
+            route = Screen.Lamar.route,
+            arguments = listOf(navArgument("jobTitle") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobTitle = backStackEntry.arguments?.getString("jobTitle")
+            Lamar(navController = navController, jobTitle = jobTitle)
+        }
     }
 }
 
@@ -85,7 +120,6 @@ fun AppTopBar(
     scope: CoroutineScope,
     drawerState: DrawerState,
     navController: NavController
-
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -209,13 +243,10 @@ fun DrawerBody(
                     unselectedTextColor = AntiNganggurDarkGray,
                     unselectedIconColor = AntiNganggurDarkGray
                 )
-
             )
         }
     }
 }
-
-// PRIPIWW
 
 @Preview(showBackground = true)
 @Composable
@@ -246,9 +277,8 @@ fun DrawerBodyPreview() {
             DrawerBody(
                 navController = navController,
                 scope = scope,
-                drawerState = drawerState,
-
-                )
+                drawerState = drawerState
+            )
         }
     }
 }
@@ -265,8 +295,7 @@ fun DrawerBodyItemSelectedPreview() {
                 navController = navController,
                 scope = scope,
                 drawerState = drawerState,
-
-                previewSelectedRoute = Screen.Login.route
+                previewSelectedRoute = Screen.Login.route // Show Login as selected
             )
         }
     }
@@ -289,9 +318,8 @@ fun FullAppStructurePreview_DrawerClosed() {
                     DrawerBody(
                         navController = navController,
                         scope = scope,
-                        drawerState = drawerState,
-
-                        )
+                        drawerState = drawerState
+                    )
                 }
             }
         ) {
@@ -332,7 +360,6 @@ fun FullAppStructurePreview_DrawerOpen() {
                         navController = navController,
                         scope = scope,
                         drawerState = drawerState,
-
                         previewSelectedRoute = Screen.Home.route // Show Home as selected
                     )
                 }
