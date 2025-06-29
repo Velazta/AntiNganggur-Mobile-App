@@ -79,6 +79,47 @@ Metode ini ditujukan bagi Anda yang ingin mengoprek, memodifikasi, atau berkontr
     * Setelah sinkronisasi selesai, pilih emulator atau perangkat fisik yang terhubung.
     * Klik tombol **Run** (ikon segitiga hijau ▶️). Aplikasi akan otomatis ter-build dan terinstal.
 
+## サーバー **Penting: Menjalankan Server Backend**
+
+Aplikasi mobile ini membutuhkan koneksi ke server backend agar dapat berfungsi sepenuhnya (mengambil data lowongan, login, register, dll.). Anda **wajib** menjalankan server backend secara lokal di komputer Anda.
+
+Backend aplikasi ini dibuat menggunakan Laravel. Ikuti langkah-langkah berikut untuk menjalankannya:
+
+1.  **Clone Repositori Server**
+    Buka terminal baru dan jalankan perintah:
+    ```bash
+    git clone [https://github.com/Velazta/antinganggur-beta.git](https://github.com/Velazta/antinganggur-beta.git)
+    ```
+
+2.  **Instalasi Dependensi**
+    Masuk ke direktori `antinganggur-beta` dan install semua dependensi yang dibutuhkan menggunakan Composer.
+    ```bash
+    cd antinganggur-beta
+    composer install
+    ```
+
+3.  **Konfigurasi Environment**
+    Salin file `.env.example` menjadi `.env` dan konfigurasikan koneksi database Anda di dalamnya.
+    ```bash
+    cp .env.example .env
+    ```
+    Jangan lupa untuk membuat database baru sesuai dengan nama yang Anda atur di file `.env`.
+
+4.  **Generate Key dan Migrasi Database**
+    Jalankan perintah berikut untuk men-generate *application key* dan membuat tabel-tabel di database.
+    ```bash
+    php artisan key:generate
+    php artisan migrate
+    ```
+
+5.  **Jalankan Server Laravel**
+    Setelah semua siap, jalankan server lokal dengan perintah:
+    ```bash
+    php artisan serve
+    ```
+    Server akan berjalan di `http://127.0.0.1:8000`. Pastikan URL ini sesuai dengan yang ada di konfigurasi aplikasi mobile Anda.
+
+
 ## 👥 Tim Pengembang
 
 Aplikasi ini dikembangkan dan dikelola oleh:
