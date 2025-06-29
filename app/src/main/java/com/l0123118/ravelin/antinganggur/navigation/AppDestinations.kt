@@ -45,8 +45,6 @@ sealed class Screen(val route: String, val title: String, val icon: ImageVector)
 val drawerMenuItems = listOf(
     Screen.Home,
     Screen.Profile,
-    Screen.Login,
-    Screen.SignIn,
     Screen.Portofolio,
     Screen.LowonganScreen,
     Screen.ContactPage,

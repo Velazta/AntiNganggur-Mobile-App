@@ -102,22 +102,6 @@ fun LatarBelakang() {
                     lineHeight = 22.sp
                 )
                 Spacer(modifier = Modifier.height(32.dp))
-                OutlinedButton(
-                    onClick = { /* Aksi ketika tombol diklik */ },
-                    shape = RoundedCornerShape(50),
-                    border = BorderStroke(1.5.dp, Color.White),
-                    colors = ButtonDefaults.outlinedButtonColors(
-                        contentColor = Color.White,
-                        containerColor = Color.Transparent
-                    ),
-                    modifier = Modifier.defaultMinSize(minWidth = 180.dp, minHeight = 48.dp)
-                ) {
-                    Text(
-                        "Lihat Detail",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                }
             }
         }
 

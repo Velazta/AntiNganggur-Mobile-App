@@ -69,14 +69,48 @@ val BlueSubmit = Color(0xFF1A73E8)
 val YellowBackgroundForm = Color(0xFFFFD180)
 
 
-
-
 //CODE 1
 @Composable
 fun ContactPage(navController: NavHostController) {
     var nameState by remember{ mutableStateOf("") }
     var emailState by remember{ mutableStateOf("") }
     var messageState by remember{ mutableStateOf("") }
+    val context = LocalContext.current
+
+    val openInstagram: () -> Unit = {
+        val uri = Uri.parse("https://www.instagram.com/ravelinluth/")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    val openGitHub: () -> Unit = {
+        val uri = Uri.parse("https://github.com/Velazta/AntiNganggur-Mobile-App")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        context.startActivity(intent)
+    }
+
+    val openWhatsApp: () -> Unit = {
+        val phoneNumber = "6281219500363"
+        val message = "Halo, saya tertarik dengan layanan Anda."
+        val uri = Uri.parse("https://api.whatsapp.com/send?phone=$phoneNumber&text=${Uri.encode(message)}")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    val socialMediaItems = listOf(
+        SocialMediaItem(R.drawable.instagramb, R.drawable.instagramw, "Instagram", openInstagram),
+        SocialMediaItem(R.drawable.whatsappb, R.drawable.whatsappw, "WhatsApp", openWhatsApp),
+        SocialMediaItem(R.drawable.githubb, R.drawable.githubw, "GitHub", openGitHub)
+    )
+
 
     LazyColumn(
         modifier = Modifier
@@ -202,42 +236,6 @@ fun ContactPage(navController: NavHostController) {
                 .padding(horizontal = 24.dp)
             )
         }
-//        item {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .padding(horizontal = 24.dp, vertical = 24.dp),
-//                horizontalArrangement = Arrangement.SpaceBetween
-//            ) {
-//                SocialMediaButton(
-//                    icon = Icons.Outlined.Info,
-//                    text = "INSTAGRAM",
-//                    onClick = { /* TODO: Handle Instagram click */ },
-//                    modifier = Modifier.weight(1f)
-//                )
-//                Spacer(modifier = Modifier.width(12.dp))
-//                SocialMediaButton(
-//                    icon = Icons.Outlined.Send,
-//                    text = "WHATSAPP",
-//                    onClick = { /* TODO: Handle WhatsApp click */ },
-//                    modifier = Modifier.weight(1f)
-//                )
-//                Spacer(modifier = Modifier.width(12.dp))
-//                SocialMediaButton(
-//                    icon = Icons.Outlined.AlternateEmail,
-//                    text = "GITHUB",
-//                    onClick = { /* TODO: Handle GitHub click */ },
-//                    modifier = Modifier.weight(1f)
-//                )
-//            }
-//            Spacer(
-//                modifier = Modifier
-//                    .height(50.dp)
-//                    .padding(start = 24.dp, end = 24.dp)
-//            )
-//        }
-
-
         item {
             Box(
                 modifier = Modifier
@@ -448,12 +446,6 @@ data class SocialMediaItem(
     val pressedImageRes: Int,
     val text: String,
     val onClickAction: () -> Unit
-)
-
-val socialMediaItems = listOf(
-    SocialMediaItem(R.drawable.instagramb, R.drawable.instagramw, "Instagram", {}),
-    SocialMediaItem(R.drawable.whatsappb, R.drawable.whatsappw, "WhatsApp", {}),
-    SocialMediaItem(R.drawable.githubb, R.drawable.githubw,"GitHub", {})
 )
 
 @Composable
