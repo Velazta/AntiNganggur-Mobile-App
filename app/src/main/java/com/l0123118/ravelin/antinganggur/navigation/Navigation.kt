@@ -30,22 +30,23 @@ import androidx.navigation.navArgument
 import com.l0123118.ravelin.antinganggur.menulist.mainpage.Home
 import com.l0123118.ravelin.antinganggur.authentification.LoginPage
 import com.l0123118.ravelin.antinganggur.authentification.SignInPage2
-import com.l0123118.ravelin.antinganggur.authentification.navigateToMainActivity
 import com.l0123118.ravelin.antinganggur.menulist.contactpage.ContactPage
-import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.JobDetailScreen
 import com.l0123118.ravelin.antinganggur.R
 import com.l0123118.ravelin.antinganggur.menulist.aboutuspage.AboutUsPage
+import com.l0123118.ravelin.antinganggur.menulist.lamarpage.Lamar
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.BiodataScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.CvScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.EducationScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.ExperienceScreen
 import com.l0123118.ravelin.antinganggur.menulist.profilepage.ProfileScreen
+import com.l0123118.ravelin.antinganggur.menulist.portofoliopage.PortofolioPage
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurDarkGray
 import com.l0123118.ravelin.antinganggur.ui.theme.AntiNganggurOrange
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import com.l0123118.ravelin.antinganggur.menulist.lowonganpage.LowonganScreen
 
 @Composable
 fun AppNavHost(
@@ -91,7 +92,7 @@ fun AppNavHost(
         composable(Screen.UploadCV.route) {
             CvScreen(navController = navController)
         }
-        
+
         composable(
             route = Screen.JobDetail.route,
             arguments = listOf(navArgument("jobId") { type = NavType.StringType })
@@ -99,6 +100,16 @@ fun AppNavHost(
             val jobId = backStackEntry.arguments?.getString("jobId")
             println("Navigation: Navigating to JobDetail with jobId = $jobId")
             JobDetailScreen(navController = navController, jobId = jobId)
+        }
+        composable(Screen.Portofolio.route) {
+            PortofolioPage(navController = navController)
+        }
+        composable(
+            route = Screen.Lamar.route,
+            arguments = listOf(navArgument("jobTitle") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val jobTitle = backStackEntry.arguments?.getString("jobTitle")
+            Lamar(navController = navController, jobTitle = jobTitle)
         }
     }
 }

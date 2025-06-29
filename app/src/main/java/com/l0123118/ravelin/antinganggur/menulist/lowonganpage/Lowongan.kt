@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -20,10 +21,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.foundation.BorderStroke
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.l0123118.ravelin.antinganggur.MyApplication
 import com.l0123118.ravelin.antinganggur.R
+import com.l0123118.ravelin.antinganggur.di.JobViewModelFactory
 import com.l0123118.ravelin.antinganggur.navigation.Screen
 import com.l0123118.ravelin.antinganggur.ui.theme.PrimaryOrange
 import com.l0123118.ravelin.antinganggur.ui.theme.LightOrange
@@ -41,122 +43,9 @@ data class Job(
     val type: String,
     val salary: String,
     val description: String,
-    val iconResId: Int? = null
+    val iconResId: Int? = null,
+    val isTrending: Boolean
 )
-
-// viewModel buat mengelola data lowongan pekerjaan
-class JobViewModel : ViewModel() {
-    private val _trendingJobs = mutableStateListOf<Job>()
-    val trendingJobs: List<Job> get() = _trendingJobs
-
-    private val _recentJobs = mutableStateListOf<Job>()
-    val recentJobs: List<Job> get() = _recentJobs
-
-    init {
-        //data buat lowongan trending
-        _trendingJobs += Job(
-            title = "Frontend Developer",
-            company = "AntiNganggur",
-            location = "Kota Surakarta",
-            type = "Full-Time",
-            salary = "Rp22-32jt/Bulan",
-            description = "Bangun antarmuka web yang menarik dan mudah digunakan.",
-            iconResId = R.drawable.frontend
-        )
-        _trendingJobs += Job(
-            title = "Data Scientist",
-            company = "AntiNganggur",
-            location = "Yogyakarta",
-            type = "Full-Time",
-            salary = "Rp18-30jt/Bulan",
-            description = "Mencari Data Scientist yang mahir dalam analisis data, machine learning, dan membangun model prediktif untuk memecahkan masalah bisnis.",
-            iconResId = R.drawable.datascientist
-        )
-        _trendingJobs += Job(
-            title = "Mobile Developer",
-            company = "AntiNganggur",
-            location = "Surabaya",
-            type = "Full-Time",
-            salary = "Rp20-30jt/Bulan",
-            description = "Mengembangkan dan memelihara aplikasi mobile (Android/iOS).",
-            iconResId = R.drawable.mobiledev
-        )
-        _trendingJobs += Job(
-            title = "Cyber Security Analyst",
-            company = "AntiNganggur",
-            location = "Bandung",
-            type = "Full-Time",
-            salary = "Rp20-30jt/Bulan",
-            description = "Melindungi sistem komputer dan jaringan dari ancaman siber.",
-            iconResId = R.drawable.cyberanalyst
-        )
-
-        // Data untuk Lowongan Terbaru
-        _recentJobs += Job(
-            title = "Backend Developer",
-            company = "AntiNganggur",
-            location = "Bandung",
-            type = "Full-Time",
-            salary = "Rp20–30jt/Bulan",
-            description = "Bangun dan kembangkan API serta sistem backend perusahaan. Tanggung jawab meliputi desain database, implementasi logika bisnis, dan integrasi layanan.",
-            iconResId = R.drawable.backend
-        )
-        _recentJobs += Job(
-            title = "DevOps Engineer",
-            company = "AntiNganggur",
-            location = "Jakarta",
-            type = "Hybrid",
-            salary = "Rp25–35jt/Bulan",
-            description = "Kelola infrastruktur dan deployment pipeline dengan aman dan efisien. Fokus pada otomatisasi, pemantauan, dan peningkatan skalabilitas sistem.",
-            iconResId = R.drawable.devops
-        )
-        _recentJobs += Job(
-            title = "Cloud Architect",
-            company = "AntiNganggur",
-            location = "Jakarta",
-            type = "Full-Time",
-            salary = "Rp30–45jt/Bulan",
-            description = "Merancang dan mengimplementasikan solusi cloud scalable di platform seperti AWS, Azure, atau GCP. Memastikan keamanan dan performa infrastruktur cloud.",
-            iconResId = R.drawable.cloudarchitect
-        )
-        _recentJobs += Job(
-            title = "Software Engineer",
-            company = "AntiNganggur",
-            location = "Yogyakarta",
-            type = "Full-Time",
-            salary = "Rp15-28jt/Bulan",
-            description = "Merancang, mengembangkan, dan memelihara aplikasi perangkat lunak yang scalable dan efisien menggunakan bahasa pemrograman modern. Berkontribusi dalam seluruh siklus hidup pengembangan perangkat lunak.",
-            iconResId = R.drawable.softwareengineer
-        )
-        _recentJobs += Job(
-            title = "Network Administrator",
-            company = "AntiNganggur",
-            location = "Surabaya",
-            type = "Full-Time",
-            salary = "Rp10-18jt/Bulan",
-            description = "Mengelola, mengkonfigurasi, dan memelihara infrastruktur jaringan perusahaan. Memastikan ketersediaan jaringan yang tinggi dan keamanan data.",
-            iconResId = R.drawable.netadministrator
-        )
-        _recentJobs += Job(
-            title = "Frontend Developer WFH",
-            company = "AntiNganggur",
-            location = "Jakarta",
-            type = "Full-Time • Remote",
-            salary = "Rp18-28jt/Bulan",
-            description = "Mengembangkan antarmuka web responsif menggunakan React.js dan Vue.js. Bekerja secara remote dengan tim yang tersebar di seluruh Indonesia. Membutuhkan pengalaman minimal 2 tahun dalam frontend development.",
-            iconResId = R.drawable.frontend
-        )
-        _recentJobs += Job(
-            title = "Backend Developer WFH",
-            company = "AntiNganggur",
-            location = "Surabaya",
-            type = "Full-Time • Remote",
-            salary = "Rp20-32jt/Bulan",
-            description = "Membangun dan memelihara API serta sistem backend menggunakan Node.js, Python, atau Java. Posisi full remote dengan fleksibilitas waktu kerja. Pengalaman dengan database dan cloud services diperlukan.",
-            iconResId = R.drawable.backend
-        )
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -252,22 +141,20 @@ fun SearchLowonganSection(
 @Composable
 fun LowonganScreen(
     navController: NavController = rememberNavController(),
-    viewModel: JobViewModel = viewModel()
+    viewModel: JobViewModel = viewModel(
+        factory = JobViewModelFactory((LocalContext.current.applicationContext as MyApplication).appContainer.jobRepository)
+    )
 ) {
-    val trendingJobs = viewModel.trendingJobs
-    val recentJobs = viewModel.recentJobs
+    val trendingJobs by viewModel.trendingJobs.collectAsState()
+    val recentJobs by viewModel.recentJobs.collectAsState()
+    val searchResults by viewModel.searchResults.collectAsState()
+    val isLoading by viewModel.isLoading.collectAsState()
+
     var keyword by remember { mutableStateOf("") }
     var locationFilter by remember { mutableStateOf("Semua Lokasi") }
 
-    var filteredTrendingJobs by remember { mutableStateOf(trendingJobs) }
-    var filteredRecentJobs by remember { mutableStateOf(recentJobs) }
-
     fun doSearch() {
-        filteredTrendingJobs = trendingJobs
-        filteredRecentJobs = recentJobs.filter { job ->
-            (locationFilter == "Semua Lokasi" || job.location.contains(locationFilter, ignoreCase = true)) &&
-                    (keyword.isBlank() || job.title.contains(keyword, ignoreCase = true))
-        }
+        viewModel.searchJobs(keyword, locationFilter)
     }
 
     LazyColumn(
@@ -289,7 +176,6 @@ fun LowonganScreen(
                     Text("Daftarkan Pekerjaan Impian", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
                     Text("Anda Di AntiNganggur", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Color.White)
                     Spacer(modifier = Modifier.height(24.dp))
-                    // Pass doSearch to SearchLowonganSection
                     SearchLowonganSection(
                         keyword, { keyword = it },
                         locationFilter, { locationFilter = it },
@@ -299,60 +185,97 @@ fun LowonganScreen(
             }
         }
 
-        // Trending jobs section
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(LightPeach)
-                    .padding(vertical = 24.dp, horizontal = 16.dp)
-            ) {
-                Text("Lowongan Kerja Yang", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Text("Sedang Trending", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Temukan Lowongan Pekerjaan Teratas Yang Banyak", fontSize = 14.sp, color = Color.White)
-                Text("Dilamar Oleh Para Pencari Kerja.", fontSize = 14.sp, color = Color.White)
-                Spacer(modifier = Modifier.height(24.dp))
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(end = 8.dp)
+        // Show loading indicator
+        if (isLoading) {
+            item {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(32.dp),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(filteredTrendingJobs) { job ->
-                        JobCard(job, navController)
-                    }
+                    CircularProgressIndicator()
                 }
             }
-        }
+        } else {
+            // Show search results if search is active
+            if (searchResults.isNotEmpty()) {
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LightOrange)
+                            .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+                    ) {
+                        Text("Hasil Pencarian", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Ditemukan ${searchResults.size} lowongan", fontSize = 14.sp, color = Gray)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
 
-        // Recent jobs section
-        item {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(LightOrange)
-                    .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
-            ) {
-                Text("Lowongan Terbaru", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.Black)
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("Jangan lewatkan kesempatan emas, segera lamar lowongan terbaru ini!", fontSize = 14.sp, color = Gray)
-                Spacer(modifier = Modifier.height(16.dp))
+                items(searchResults) { job ->
+                    JobDetailCard(
+                        job,
+                        navController = navController,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+            } else {
+                // Show trending jobs section
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LightPeach)
+                            .padding(vertical = 24.dp, horizontal = 16.dp)
+                    ) {
+                        Text("Lowongan Kerja Yang", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Text("Sedang Trending", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Temukan Lowongan Pekerjaan Teratas Yang Banyak", fontSize = 14.sp, color = Color.White)
+                        Text("Dilamar Oleh Para Pencari Kerja.", fontSize = 14.sp, color = Color.White)
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        LazyRow(
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            contentPadding = PaddingValues(end = 8.dp)
+                        ) {
+                            items(trendingJobs) { job ->
+                                JobCard(job, navController)
+                            }
+                        }
+                    }
+                }
+
+                // Recent jobs section
+                item {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(LightOrange)
+                            .padding(top = 24.dp, start = 16.dp, end = 16.dp, bottom = 8.dp)
+                    ) {
+                        Text("Lowongan Terbaru", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.Black)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text("Jangan lewatkan kesempatan emas, segera lamar lowongan terbaru ini!", fontSize = 14.sp, color = Gray)
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+                }
+
+                items(recentJobs) { job ->
+                    JobDetailCard(
+                        job,
+                        navController = navController,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
             }
-        }
-
-        // Recent jobs detail
-        items(filteredRecentJobs) { job ->
-            JobDetailCard(
-                job,
-                navController = navController,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            )
         }
     }
 }
 
-// JobCard buat ringkasan lowongan trending
+// JobCard dan JobDetailCard tetap sama seperti sebelumnya
 @Composable
 fun JobCard(job: Job, navController: NavController) {
     Card(
@@ -401,10 +324,7 @@ fun JobCard(job: Job, navController: NavController) {
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(
-                onClick = {
-                    Log.d("JobNavigation", "Navigating to job detail: ${job.title}")
-                    navController.navigate(Screen.JobDetail.createRoute(job.title))
-                },
+                onClick = {navController.navigate(Screen.Lamar.createRoute(job.title))},
                 colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
@@ -415,7 +335,6 @@ fun JobCard(job: Job, navController: NavController) {
     }
 }
 
-//tampilan detail buat lowongan terbaru
 @Composable
 fun JobDetailCard(job: Job, navController: NavController, modifier: Modifier = Modifier) {
     Card(
@@ -480,10 +399,7 @@ fun JobDetailCard(job: Job, navController: NavController, modifier: Modifier = M
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = {
-                        Log.d("JobNavigation", "Navigating to job detail: ${job.title}")
-                        navController.navigate(Screen.JobDetail.createRoute(job.title))
-                    },
+                    onClick = {navController.navigate(Screen.Lamar.createRoute(job.title))},
                     colors = ButtonDefaults.buttonColors(containerColor = PrimaryOrange),
                     shape = RoundedCornerShape(8.dp),
                     modifier = Modifier.width(110.dp)
@@ -509,7 +425,7 @@ fun JobDetailCard(job: Job, navController: NavController, modifier: Modifier = M
 
 @Preview(showBackground = true, widthDp = 360)
 @Composable
-fun PreviewLowonganScreenCombined() {
+fun PreviewLowonganScreen() {
     MaterialTheme {
         Surface {
             LowonganScreen()

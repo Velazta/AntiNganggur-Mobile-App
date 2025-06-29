@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.l0123118.ravelin.antinganggur.data.api.model.*
 import okhttp3.MultipartBody
 import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.DELETE
 import retrofit2.http.POST
@@ -75,6 +76,5 @@ interface ApiService {
     @Streaming
     @GET("user/cv/download/{id}")
     suspend fun downloadCv(@Path("id") cvId: Int): ResponseBody
-
     // Daftar endpoint lain akan ditambahkan di sini nanti
 }
