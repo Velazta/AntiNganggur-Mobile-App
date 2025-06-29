@@ -219,7 +219,11 @@ fun JobSection(navController: NavController) {
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
-            onClick = {navController.navigate(Screen.LowonganScreen.route)},
+            onClick = {navController.navigate(Screen.LowonganScreen.route) {
+                popUpTo(Screen.Home.route) { saveState = true }
+                launchSingleTop = true
+                restoreState = true
+            } },
             colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
