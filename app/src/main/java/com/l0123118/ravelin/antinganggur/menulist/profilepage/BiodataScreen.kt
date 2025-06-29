@@ -1,7 +1,12 @@
 package com.l0123118.ravelin.antinganggur.menulist.profilepage
 
 import android.app.Dialog
+import android.content.Context
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,6 +29,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -44,6 +50,9 @@ import com.l0123118.ravelin.antinganggur.ui.profile.ProfileViewModel
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
 import androidx.compose.ui.window.Dialog
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +63,7 @@ fun BiodataScreen(
     )
 ) {
     val uiState by viewModel.profileState.collectAsState()
-    val context = LocalContext.current
+    val imageCacheKey by viewModel.profileImageCacheKey.collectAsState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchUserProfile()
@@ -93,7 +102,8 @@ fun BiodataScreen(
                 BiodataForm(
                     modifier = Modifier.padding(paddingValues),
                     profile = state.profile,
-                    // PERBAIKAN: Berikan lambda yang memanggil fungsi di ViewModel
+                    viewModel = viewModel,
+                    imageCacheKey = imageCacheKey,
                     onSaveClick = { updatedProfile ->
                         viewModel.updateProfile(updatedProfile)
                     }
@@ -113,9 +123,10 @@ fun BiodataScreen(
 fun BiodataForm(
     modifier: Modifier = Modifier,
     profile: Profile,
+    viewModel: ProfileViewModel,
+    imageCacheKey: Long,
     onSaveClick: (Profile) -> Unit
 ) {
-    // State untuk setiap field agar bisa diedit
     var name by remember { mutableStateOf(profile.name ?: "") }
     var phoneNumber by remember { mutableStateOf(profile.phoneNumber ?: "") }
     var country by remember { mutableStateOf(profile.country ?: "") }
@@ -126,7 +137,6 @@ fun BiodataForm(
     var address by remember { mutableStateOf(profile.address ?: "") }
     var bio by remember { mutableStateOf(profile.bio ?: "") }
 
-    // --- State untuk Date Picker ---
     val context = LocalContext.current
     val showDatePicker = remember { mutableStateOf(false) }
     val datePickerState = rememberDatePickerState()
@@ -138,9 +148,7 @@ fun BiodataForm(
                 TextButton(
                     onClick = {
                         showDatePicker.value = false
-                        // Ambil tanggal yang dipilih (dalam milidetik) dan format
                         datePickerState.selectedDateMillis?.let { millis ->
-                            // Format ke yyyy-MM-dd agar sesuai dengan standar database
                             val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
                             dateOfBirth = formatter.format(java.util.Date(millis))
                         }
@@ -155,6 +163,18 @@ fun BiodataForm(
         }
     }
 
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent(),
+        onResult = { uri: Uri? ->
+            uri?.let {
+                val imagePart = it.toMultipartBodyPart(context, "profile_photo")
+                imagePart?.let { part ->
+                    viewModel.updateProfilePhoto(part)
+                }
+            }
+        }
+    )
+
     LazyColumn(
         modifier = modifier.fillMaxSize().padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -162,17 +182,22 @@ fun BiodataForm(
         item {
             Spacer(modifier = Modifier.height(16.dp))
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current).data(profile.profilePhotoPath ?: "https://via.placeholder.com/150").crossfade(true).build(),
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data("${profile.profilePhotoUrl}?v=$imageCacheKey")
+                    .crossfade(true)
+                    .build(),
+                placeholder = painterResource(id = com.l0123118.ravelin.antinganggur.R.drawable.logoantinganggur),
+                error = painterResource(id = com.l0123118.ravelin.antinganggur.R.drawable.logoantinganggur),
                 contentDescription = "Foto Profil",
                 contentScale = ContentScale.Crop,
-                modifier = Modifier.size(120.dp).clip(CircleShape)
+                modifier = Modifier.size(120.dp).clip(CircleShape).clickable { imagePickerLauncher.launch("image/*") }
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
                 text = "Ubah Foto",
                 color = OrangePrimary,
                 fontWeight = FontWeight.SemiBold,
-                modifier = Modifier.clickable { /* TODO: Buka galeri/kamera */ }
+                modifier = Modifier.clickable { imagePickerLauncher.launch("image/*") }
             )
             Spacer(modifier = Modifier.height(32.dp))
         }
@@ -188,7 +213,7 @@ fun BiodataForm(
                 LabeledTextField(
                     label = "Tanggal Lahir",
                     value = dateOfBirth,
-                    onValueChange = { /* Dikosongkan karena input dari dialog */ },
+                    onValueChange = {},
                     readOnly = true,
                     trailingIcon = { Icon(Icons.Default.CalendarToday, "Kalender") }
                 )
@@ -364,6 +389,8 @@ fun CustomSuccessDialog(
         }
     }
 }
+
+
 
 
 @Preview(showBackground = true)

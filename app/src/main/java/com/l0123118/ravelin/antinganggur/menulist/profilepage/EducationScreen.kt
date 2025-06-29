@@ -110,7 +110,7 @@ fun EducationContent(
             }
         } else if (!showAddForm && educationToEdit == null) {
             item {
-                Card(modifier = Modifier.fillMaxWidth(), border = BorderStroke(1.dp, Color.LightGray)) {
+                Card(modifier = Modifier.fillMaxWidth()) {
                     Text(
                         text = "Anda belum menambahkan riwayat pendidikan.",
                         modifier = Modifier.padding(16.dp),
@@ -122,10 +122,15 @@ fun EducationContent(
 
         item {
             AnimatedVisibility(visible = !showAddForm && educationToEdit == null) {
-                OutlinedButton(onClick = { showAddForm = true }, modifier = Modifier.fillMaxWidth()) {
-                    Icon(Icons.Default.Add, contentDescription = "Tambah")
+                OutlinedButton(
+                    onClick = { showAddForm = true },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.dp, OrangePrimary)
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Tambah", tint = OrangePrimary)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Tambah Riwayat Pendidikan")
+                    Text("Tambah Riwayat Pendidikan", color = OrangePrimary)
                 }
             }
         }
@@ -241,7 +246,14 @@ fun EducationForm(
         }
 
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
-            Checkbox(checked = isCurrentlyStudying, onCheckedChange = { isCurrentlyStudying = it })
+            Checkbox(checked = isCurrentlyStudying,
+                onCheckedChange = { isCurrentlyStudying = it },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = OrangePrimary,
+                    uncheckedColor = Color.Gray,
+                    checkmarkColor = Color.White
+                )
+            )
             Text("Saya masih menempuh pendidikan di sini", modifier = Modifier.clickable { isCurrentlyStudying = !isCurrentlyStudying })
         }
 
@@ -271,7 +283,9 @@ fun EducationForm(
                     updatedAt = null
                 )
                 onSaveClick(newEducation)
-            }) { Text("Simpan") }
+            },shape = RoundedCornerShape(12.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary))
+            { Text("Simpan") }
         }
     }
 }

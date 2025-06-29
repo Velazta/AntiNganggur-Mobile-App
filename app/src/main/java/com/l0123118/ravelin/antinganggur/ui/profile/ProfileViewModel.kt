@@ -54,6 +54,9 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
     private val _profileState = MutableStateFlow<ProfileUiState>(ProfileUiState.Loading)
     val profileState: StateFlow<ProfileUiState> = _profileState.asStateFlow()
 
+    private val _profileImageCacheKey = MutableStateFlow(System.currentTimeMillis())
+    val profileImageCacheKey: StateFlow<Long> = _profileImageCacheKey.asStateFlow()
+
     private val _experienceState = MutableStateFlow<ExperienceUiState>(ExperienceUiState.Loading)
     val experienceState: StateFlow<ExperienceUiState> = _experienceState.asStateFlow()
 
@@ -99,6 +102,32 @@ class ProfileViewModel(private val repository: ProfileRepository) : ViewModel() 
                 _profileState.value = ProfileUiState.Success(profileData)
             } catch (e: Exception) {
                 _profileState.value = ProfileUiState.Error("Gagal memuat profil: ${e.message}")
+            }
+        }
+    }
+
+    fun updateProfilePhoto(photoPart: MultipartBody.Part) {
+        viewModelScope.launch {
+            _isUpdating.value = true
+            try {
+                val response = repository.updateProfilePhoto(photoPart)
+
+                // PENTING: Update cache key dengan timestamp baru untuk memaksa refresh
+                _profileImageCacheKey.value = System.currentTimeMillis()
+
+                // Muat ulang data profil untuk mendapatkan URL foto yang baru
+                fetchUserProfile()
+
+                dialogMessage = response.message
+                isUpdateSuccess = true
+                showSuccessDialog = true
+
+            } catch (e: Exception) {
+                dialogMessage = "Gagal mengunggah foto: ${e.message}"
+                isUpdateSuccess = false
+                showSuccessDialog = true
+            } finally {
+                _isUpdating.value = false
             }
         }
     }

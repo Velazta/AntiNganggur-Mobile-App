@@ -1,6 +1,7 @@
 package com.l0123118.ravelin.antinganggur.menulist.profilepage
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -131,11 +132,13 @@ fun ExperienceContent(
             AnimatedVisibility(visible = !showAddForm && experienceToEdit == null){
                 OutlinedButton(
                     onClick = { showAddForm = true },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(12.dp),
+                    border = BorderStroke(1.dp, OrangePrimary)
                 ) {
-                    Icon(Icons.Default.Add, contentDescription = "Tambah")
+                    Icon(Icons.Default.Add, contentDescription = "Tambah", tint = OrangePrimary)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text("Tambah Pengalaman Baru")
+                    Text("Tambah Pengalaman Baru", color = OrangePrimary)
                 }
             }
         }
@@ -283,14 +286,28 @@ fun ExperienceForm(
         }
 
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 8.dp)) {
-            Checkbox(checked = isCurrentJob, onCheckedChange = { isCurrentJob = it })
+            Checkbox(
+                checked = isCurrentJob,
+                onCheckedChange = { isCurrentJob = it },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = OrangePrimary,          // Warna saat dicentang
+                    uncheckedColor = Color.Gray,         // Warna saat tidak dicentang
+                    checkmarkColor = Color.White         // Warna centangnya
+                )
+            )
             Text("Saya masih bekerja di sini", modifier = Modifier.clickable { isCurrentJob = !isCurrentJob })
         }
 
         LabeledTextField(label = "Deskripsi Pekerjaan", value = description, onValueChange = { description = it }, singleLine = false, minLines = 5, placeholder = "Jelaskan tanggung jawab dan pencapaian Anda")
 
         Row(modifier = Modifier.fillMaxWidth().padding(top = 16.dp), horizontalArrangement = Arrangement.End) {
-            OutlinedButton(onClick = onCancelClick) { Text("Batal") }
+            OutlinedButton(
+                onClick = onCancelClick,
+                shape = RoundedCornerShape(12.dp),
+                border = BorderStroke(1.dp, OrangePrimary)
+            ) {
+                Text("Batal", color = OrangePrimary)
+            }
             Spacer(modifier = Modifier.width(8.dp))
             Button(onClick = {
                 val newExperience = Experience(
@@ -308,14 +325,22 @@ fun ExperienceForm(
                     createdAt = null, updatedAt = null
                 )
                 onSaveClick(newExperience)
-            }) { Text("Simpan") }
+            },shape = RoundedCornerShape(12.dp), // Sesuaikan bentuk sudut
+                colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary))
+            { Text("Simpan") }
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DropdownMenuInput(label: String, selectedOption: String, options: List<String>, onOptionSelected: (String) -> Unit, modifier: Modifier = Modifier) {
+fun DropdownMenuInput(
+    label: String,
+    selectedOption: String,
+    options: List<String>,
+    onOptionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = !expanded }, modifier = modifier) {
         OutlinedTextField(
@@ -324,6 +349,10 @@ fun DropdownMenuInput(label: String, selectedOption: String, options: List<Strin
             readOnly = true,
             label = { Text(label) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = OrangePrimary, // Warna border saat menu terbuka
+                unfocusedBorderColor = Color.LightGray
+            ),
             modifier = Modifier
                 .menuAnchor()
                 .fillMaxWidth()

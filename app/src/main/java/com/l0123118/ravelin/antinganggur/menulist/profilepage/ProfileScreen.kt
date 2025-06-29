@@ -14,8 +14,11 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.BusinessCenter
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.School
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,19 +27,41 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
+import com.l0123118.ravelin.antinganggur.MyApplication
+import com.l0123118.ravelin.antinganggur.di.ViewModelFactory
 import com.l0123118.ravelin.antinganggur.navigation.Screen
+import com.l0123118.ravelin.antinganggur.ui.profile.ProfileUiState
+import com.l0123118.ravelin.antinganggur.ui.profile.ProfileViewModel
 import com.l0123118.ravelin.antinganggur.ui.theme.ANTINGANGGURTheme
 import com.l0123118.ravelin.antinganggur.ui.theme.LightPeach
 import com.l0123118.ravelin.antinganggur.ui.theme.OrangePrimary
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(
+    navController: NavController,
+    viewModel: ProfileViewModel = viewModel(
+        factory = ViewModelFactory((LocalContext.current.applicationContext as MyApplication).appContainer.profileRepository)
+    )
+) {
+
+    val profileState by viewModel.profileState.collectAsState()
+    val imageCacheKey by viewModel.profileImageCacheKey.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserProfile()
+    }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -52,8 +77,8 @@ fun ProfileScreen(navController: NavController) {
             Spacer(modifier = Modifier.height(32.dp))
 
             ProfileHeaderCard(
-                name = "Giselle Aespa",
-                profilePictureUrl = null
+                profileState = profileState,
+                imageCacheKey = imageCacheKey
             )
             Spacer(modifier = Modifier.height(40.dp))
             ProfileMenuList(navController)
@@ -62,7 +87,10 @@ fun ProfileScreen(navController: NavController) {
 }
 
 @Composable
-fun ProfileHeaderCard(name: String, profilePictureUrl: String?) {
+fun ProfileHeaderCard(
+    profileState: ProfileUiState, // Terima state, bukan data mentah
+    imageCacheKey: Long
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth(),
@@ -78,24 +106,54 @@ fun ProfileHeaderCard(name: String, profilePictureUrl: String?) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            // Gunakan Coil atau Glide untuk memuat gambar dari URL di sini
-            // Untuk sekarang kita gunakan placeholder
-            Image(
-                imageVector = Icons.Default.AccountCircle, // Placeholder
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(110.dp)
-                    .clip(CircleShape)
-                    .background(Color.White)
-                    .padding(8.dp) // Beri padding agar ikon tidak terlalu besar
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = name, // Menggunakan nama dari parameter
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color(0xFF333333) // Warna teks lebih gelap agar kontras
-            )
+            when (profileState) {
+                is ProfileUiState.Loading -> {
+                    // Tampilan saat loading
+                    CircularProgressIndicator(modifier = Modifier.size(110.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(text = "Memuat...", fontSize = 22.sp, fontWeight = FontWeight.Bold)
+                }
+                is ProfileUiState.Success -> {
+                    // Tampilan jika sukses
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data("${profileState.profile.profilePhotoUrl}?v=$imageCacheKey")
+                            .crossfade(true)
+                            .build(),
+                        placeholder = painterResource(id = com.l0123118.ravelin.antinganggur.R.drawable.logoantinganggur),
+                        error = painterResource(id = com.l0123118.ravelin.antinganggur.R.drawable.logoantinganggur),
+                        contentDescription = "Foto Profil",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .size(110.dp)
+                            .clip(CircleShape)
+                            .background(Color.White)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = profileState.profile.name ?: "Pengguna", // Gunakan nama dari state
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF333333)
+                    )
+                }
+                is ProfileUiState.Error -> {
+                    // Tampilan jika error
+                    Icon(
+                        imageVector = Icons.Default.Warning,
+                        contentDescription = "Error",
+                        modifier = Modifier.size(110.dp),
+                        tint = Color.Red
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = "Gagal Memuat",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Red
+                    )
+                }
+            }
         }
     }
 }
