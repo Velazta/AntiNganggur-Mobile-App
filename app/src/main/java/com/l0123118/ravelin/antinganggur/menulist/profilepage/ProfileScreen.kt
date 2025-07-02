@@ -88,7 +88,7 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileHeaderCard(
-    profileState: ProfileUiState, // Terima state, bukan data mentah
+    profileState: ProfileUiState,
     imageCacheKey: Long
 ) {
     Card(
@@ -131,14 +131,13 @@ fun ProfileHeaderCard(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                     Text(
-                        text = profileState.profile.name ?: "Pengguna", // Gunakan nama dari state
+                        text = profileState.profile.name ?: "Pengguna",
                         fontSize = 22.sp,
                         fontWeight = FontWeight.Bold,
                         color = Color(0xFF333333)
                     )
                 }
                 is ProfileUiState.Error -> {
-                    // Tampilan jika error
                     Icon(
                         imageVector = Icons.Default.Warning,
                         contentDescription = "Error",
@@ -161,34 +160,33 @@ fun ProfileHeaderCard(
 @Composable
 fun ProfileMenuList(navController: NavController) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(16.dp) // Memberi jarak antar item menu
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        // 3. Membedakan style item menu pertama dengan yang lain
         ProfileMenuItem(
             icon = Icons.Default.AccountCircle,
             text = "Biodata Diri",
-            backgroundColor = Color.White, // Style aktif sesuai desain
+            backgroundColor = Color.White,
             contentColor = OrangePrimary,
             onClick = { navController.navigate(Screen.Biodata.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.BusinessCenter,
             text = "Pengalaman Kerja",
-            backgroundColor = Color.White, // Style non-aktif
+            backgroundColor = Color.White,
             contentColor = OrangePrimary,
             onClick = { navController.navigate(Screen.Experience.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.School,
             text = "Pendidikan",
-            backgroundColor = Color.White, // Style non-aktif
+            backgroundColor = Color.White,
             contentColor = OrangePrimary,
             onClick = { navController.navigate(Screen.Education.route) }
         )
         ProfileMenuItem(
             icon = Icons.Default.Description,
             text = "CV",
-            backgroundColor = Color.White, // Style non-aktif
+            backgroundColor = Color.White,
             contentColor = OrangePrimary,
             onClick = { navController.navigate(Screen.UploadCV.route) }
         )
@@ -205,15 +203,7 @@ fun ProfileMenuItem(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-
-    // 2. Tentukan warna overlay saat ditekan
-    // LightPeach dengan opacity 30% (0.3f) biasanya lebih baik untuk overlay
-    // daripada 80% agar tidak terlalu menutupi warna asli.
     val overlayColor = LightPeach.copy(alpha = 0.3f)
-
-    // 3. Animasikan warna latar belakang
-    // Saat ditekan, kita menggabungkan warna overlay di atas warna asli.
-    // Saat tidak ditekan, kita kembali ke warna asli.
     val animatedBackgroundColor by animateColorAsState(
         targetValue = if (isPressed) {
             overlayColor.compositeOver(backgroundColor)
@@ -227,15 +217,13 @@ fun ProfileMenuItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(56.dp)
-            // 4. Hubungkan interactionSource ke clickable dan hapus indikasi default (ripple)
             .clickable(
                 interactionSource = interactionSource,
-                indication = null, // Hapus efek ripple default agar tidak tumpang tindih
+                indication = null,
                 onClick = onClick
             ),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        // 5. Gunakan warna yang sudah dianimasikan
         colors = CardDefaults.cardColors(containerColor = animatedBackgroundColor)
     ) {
         Row(

@@ -186,7 +186,7 @@ fun DrawerHeader() {
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             Image(
-                painter = painterResource(id = R.drawable.logoantinganggur), // Pastikan drawable ini ada
+                painter = painterResource(id = R.drawable.logoantinganggur),
                 contentDescription = "Logo AntiNganggur Header",
                 modifier = Modifier.size(80.dp)
             )

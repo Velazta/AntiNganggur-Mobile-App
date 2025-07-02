@@ -262,7 +262,7 @@ fun ExperienceForm(
         )
         Divider(modifier = Modifier.padding(top = 8.dp))
 
-        // Menggunakan LabeledTextField yang sudah kita buat
+
         LabeledTextField(label = "Posisi Kerja", value = jobTitle, onValueChange = { jobTitle = it }, placeholder = "Contoh: Software Engineer")
         LabeledTextField(label = "Nama Perusahaan", value = companyName, onValueChange = { companyName = it }, placeholder = "Contoh: PT Teknologi Maju")
         LabeledTextField(label = "Negara", value = country, onValueChange = { country = it }, placeholder = "Contoh: Indonesia")
@@ -290,9 +290,9 @@ fun ExperienceForm(
                 checked = isCurrentJob,
                 onCheckedChange = { isCurrentJob = it },
                 colors = CheckboxDefaults.colors(
-                    checkedColor = OrangePrimary,          // Warna saat dicentang
-                    uncheckedColor = Color.Gray,         // Warna saat tidak dicentang
-                    checkmarkColor = Color.White         // Warna centangnya
+                    checkedColor = OrangePrimary,
+                    uncheckedColor = Color.Gray,
+                    checkmarkColor = Color.White
                 )
             )
             Text("Saya masih bekerja di sini", modifier = Modifier.clickable { isCurrentJob = !isCurrentJob })
@@ -325,7 +325,7 @@ fun ExperienceForm(
                     createdAt = null, updatedAt = null
                 )
                 onSaveClick(newExperience)
-            },shape = RoundedCornerShape(12.dp), // Sesuaikan bentuk sudut
+            },shape = RoundedCornerShape(12.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary))
             { Text("Simpan") }
         }
@@ -350,7 +350,7 @@ fun DropdownMenuInput(
             label = { Text(label) },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = OrangePrimary, // Warna border saat menu terbuka
+                focusedBorderColor = OrangePrimary,
                 unfocusedBorderColor = Color.LightGray
             ),
             modifier = Modifier

@@ -193,7 +193,6 @@ fun CvItem(
     }
 }
 
-// Fungsi helper untuk mengubah URI menjadi MultipartBody.Part
 fun Uri.toMultipartBodyPart(context: Context, partName: String): MultipartBody.Part? {
     return try {
         val contentResolver = context.contentResolver

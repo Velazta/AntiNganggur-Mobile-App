@@ -209,7 +209,7 @@ fun BiodataForm(
         item { LabeledTextField(label = "Provinsi", value = province, onValueChange = { province = it }) }
         item { LabeledTextField(label = "Kota", value = city, onValueChange = { city = it }) }
         item {
-            Box(modifier = Modifier.clickable { showDatePicker.value = true }) { // Buat seluruh area bisa diklik
+            Box(modifier = Modifier.clickable { showDatePicker.value = true }) {
                 LabeledTextField(
                     label = "Tanggal Lahir",
                     value = dateOfBirth,

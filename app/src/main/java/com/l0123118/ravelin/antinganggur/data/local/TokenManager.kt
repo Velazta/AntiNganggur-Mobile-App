@@ -12,7 +12,7 @@ class TokenManager(context: Context) {
 
     private val sharedPreferences = EncryptedSharedPreferences.create(
         context,
-        "secret_user_prefs", // nama file preferensi yang dienkripsi
+        "secret_user_prefs",
         masterKey,
         EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
         EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
