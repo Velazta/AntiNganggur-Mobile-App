@@ -8,8 +8,11 @@ Aplikasi mobile ini dirancang untuk menjadi jembatan antara talenta digital dan 
 AntiNganggur adalah platform digital yang bertujuan mengatasi permasalahan pengangguran di sektor teknologi. Dengan aplikasi ini, para pencari kerja dapat:
 
 ✅ Membangun profil profesional
+
 ✅ Menjelajahi lowongan kerja terkini
+
 ✅ Melamar langsung lewat aplikasi
+
 ✅ Memperluas kesempatan di dunia kerja digital
 
 ## ✨ Fitur-fitur Utama
