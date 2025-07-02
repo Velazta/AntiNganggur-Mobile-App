@@ -113,7 +113,6 @@ fun UploadCvSection(
     isUploading: Boolean,
     onFileSelected: (Uri?) -> Unit
 ) {
-    // Launcher untuk memilih file dari penyimpanan perangkat
     val filePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent(),
         onResult = { uri ->
@@ -139,10 +138,9 @@ fun UploadCvSection(
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
                     onClick = {
-                        // Tentukan tipe file yang bisa dipilih
                         filePickerLauncher.launch("*/*")
                     },
-                    enabled = !isUploading, // Nonaktifkan tombol saat sedang upload
+                    enabled = !isUploading,
                     colors = ButtonDefaults.buttonColors(containerColor = OrangePrimary)
                 ) {
                     if (isUploading) {

@@ -21,25 +21,18 @@ class ProfileRepository(
         val token = tokenManager.getToken()
 
         if (token == null) {
-            // Kasus 1: Token tidak ada sama sekali.
             Log.d("ProfileRepository", "No token found. Registering new guest...")
             registerGuest()
         } else {
-            // Kasus 2: Token ada, kita perlu cek validitasnya.
             Log.d("ProfileRepository", "Token found. Verifying...")
             try {
-                // Coba panggil endpoint terproteksi yang ringan.
-                // Jika berhasil, token valid dan tidak perlu melakukan apa-apa.
                 apiService.getAuthenticatedUser()
                 Log.d("ProfileRepository", "Token is valid.")
             } catch (e: Exception) {
-                // Jika gagal, cek apakah errornya karena token tidak valid (401).
                 if (e is HttpException && e.code() == 401) {
                     Log.d("ProfileRepository", "Token is invalid (401). Registering new guest...")
-                    // Hapus token lama dan daftarkan guest baru untuk dapat token baru.
                     registerGuest()
                 } else {
-                    // Jika error lain (misal: tidak ada internet), lempar lagi agar bisa ditangani di ViewModel.
                     Log.e("ProfileRepository", "Failed to verify token", e)
                     throw e
                 }
@@ -47,9 +40,6 @@ class ProfileRepository(
         }
     }
 
-    /**
-     * Fungsi private untuk mendaftarkan guest dan menyimpan token baru.
-     */
     private suspend fun registerGuest() {
         try {
             val response = apiService.registerGuest()

@@ -10,7 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitClient {
     private const val BASE_URL = "http://10.0.2.2:8000/api/"
 
-    // Pastikan return type fungsi ini adalah ApiService buatan kita
     fun createService(tokenManager: TokenManager): ApiService {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
