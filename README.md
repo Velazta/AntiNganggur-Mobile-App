@@ -82,7 +82,7 @@ Metode ini ditujukan bagi Anda yang ingin mengoprek, memodifikasi, atau berkontr
     * Setelah sinkronisasi selesai, pilih emulator atau perangkat fisik yang terhubung.
     * Klik tombol **Run** (ikon segitiga hijau ▶️). Aplikasi akan otomatis ter-build dan terinstal.
 
-## サーバー **Penting: Menjalankan Server Backend**
+## **Penting: Menjalankan Server Backend**
 
 Aplikasi mobile ini membutuhkan koneksi ke server backend agar dapat berfungsi sepenuhnya (mengambil data lowongan, login, register, dll.). Anda **wajib** menjalankan server backend secara lokal di komputer Anda.
 
